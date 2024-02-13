@@ -12,8 +12,9 @@ import javafx.scene.text.Text;
 
 
 
-public class CellGUI extends Pane  {
+public class CellGUI extends StackPane  {
     private GridPane cellPossibilityGridPane;
+    //private boolean[] possiblesInCell;
     private boolean selected;
     int row;
     int column;
@@ -32,6 +33,7 @@ public class CellGUI extends Pane  {
     public CellGUI(int row, int column) {
         super();
         selected = false;
+        //possiblesInCell = new boolean[9];
         this.row = row;
         this.column = column;
 
@@ -64,6 +66,16 @@ public class CellGUI extends Pane  {
         }
     }
 
+    public void updatePencilMarks(int possible){
+
+        if(cellPossibilityGridPane.getChildren().get(possible - 1).isVisible()){
+            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
+        }else{
+            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+        }
+
+    }
+
     private void createPencilMarks() {
         cellPossibilityGridPane = new GridPane();
         for (int i = 0; i < 3; i++) {
@@ -80,6 +92,15 @@ public class CellGUI extends Pane  {
         Text text7 = new Text("7");
         Text text8 = new Text("8");
         Text text9 = new Text("9");
+        text1.setVisible(false);
+        text2.setVisible(false);
+        text3.setVisible(false);
+        text4.setVisible(false);
+        text5.setVisible(false);
+        text6.setVisible(false);
+        text7.setVisible(false);
+        text8.setVisible(false);
+        text9.setVisible(false);
         cellPossibilityGridPane.add(text1, 0, 0);
         cellPossibilityGridPane.add(text2, 1, 0);
         cellPossibilityGridPane.add(text3, 2, 0);
