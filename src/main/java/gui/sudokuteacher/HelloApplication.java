@@ -22,11 +22,12 @@ public class HelloApplication extends Application {
         AnchorPane anchorPane = new AnchorPane();
 
         SudokuBoard sudoku = new SudokuBoard();
-        //CellGUI b = new CellGUI();
+        CellGUI b = new CellGUI();
         anchorPane.setLayoutX(10);
         //anchorPane.getChildren().add(sudoku);
         anchorPane.getChildren().add(sudoku);
         Scene scene = new Scene(anchorPane, 500, 500);
+        scene.setOnKeyPressed(sudoku.getOnKeyPressed());
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();

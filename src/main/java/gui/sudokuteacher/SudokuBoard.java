@@ -1,9 +1,12 @@
 package gui.sudokuteacher;
 
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.event.Event;
 
 
 public class SudokuBoard extends GridPane {
@@ -11,34 +14,52 @@ public class SudokuBoard extends GridPane {
 
     public SudokuBoard() {
         super();
+        setOnKeyPressed(this::keyPressed);
+        setOnMouseClicked(this::onMouseClick);
         currentCell = new CellGUI();
         super.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(4, 4, 4, 4), null)));
         buildBoard();
+    }
 
-        super.setOnMouseClicked((MouseEvent e) -> {
-            CellGUI cell = new CellGUI();
-            Node clickedNode = e.getPickResult().getIntersectedNode();
-            if (clickedNode != this) {
-                // click on descendant node
-                Node parent = clickedNode.getParent();
-                while (parent != this) {
-                    clickedNode = parent;
-                    parent = clickedNode.getParent();
-                }
-                Integer colIndex = GridPane.getColumnIndex(clickedNode);
-                Integer rowIndex = GridPane.getRowIndex(clickedNode);
-                System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex);
+    public void onMouseClick(MouseEvent e){
+        CellGUI cell = new CellGUI();
+        Node clickedNode = e.getPickResult().getIntersectedNode();
+        if (clickedNode != this) {
+            // click on descendant node
+            Node parent = clickedNode.getParent();
+            while (parent != this) {
+                clickedNode = parent;
+                parent = clickedNode.getParent();
             }
+            Integer colIndex = GridPane.getColumnIndex(clickedNode);
+            Integer rowIndex = GridPane.getRowIndex(clickedNode);
+            System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex);
+        }
 
-            cell = (CellGUI) clickedNode;
+        cell = (CellGUI) clickedNode;
 
-            currentCell.setSelected(false);
-            currentCell = cell;
-            currentCell.setSelected(true);
+        currentCell.setSelected(false);
+        currentCell = cell;
+        currentCell.setSelected(true);
+    }
 
+    /*TODO: add if/else blocks once functionality has been implemented to switch between adding possibles or solutions to board
+    *  */
+    public void keyPressed(KeyEvent e){
+        KeyCode keyPressed = e.getCode();
+        switch (keyPressed){
+            case DIGIT1, NUMPAD1 -> {currentCell.updatePencilMarks(1);}
+            case DIGIT2, NUMPAD2 -> {currentCell.updatePencilMarks(2);}
+            case DIGIT3, NUMPAD3 -> {currentCell.updatePencilMarks(3);}
+            case DIGIT4, NUMPAD4 -> {currentCell.updatePencilMarks(4);}
+            case DIGIT5, NUMPAD5 -> {currentCell.updatePencilMarks(5);}
+            case DIGIT6, NUMPAD6 -> {currentCell.updatePencilMarks(6);}
+            case DIGIT7, NUMPAD7 -> {currentCell.updatePencilMarks(7);}
+            case DIGIT8, NUMPAD8 -> {currentCell.updatePencilMarks(8);}
+            case DIGIT9, NUMPAD9 -> {currentCell.updatePencilMarks(9);}
+            default -> {}
 
-        });
-
+        }
     }
 
     private void buildBoard(){
