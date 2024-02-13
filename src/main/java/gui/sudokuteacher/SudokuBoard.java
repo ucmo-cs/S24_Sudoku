@@ -6,23 +6,28 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.event.Event;
+
 
 
 public class SudokuBoard extends GridPane {
     CellGUI currentCell;
 
-    public SudokuBoard() {
+    public SudokuBoard(String sudokuString) {
         super();
+        if(sudokuString.length() != 81){
+            System.out.println("There needs to be 81 characters to make a sudoku");
+            return;
+        }
         setOnKeyPressed(this::keyPressed);
         setOnMouseClicked(this::onMouseClick);
         currentCell = new CellGUI();
         super.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(4, 4, 4, 4), null)));
-        buildBoard();
+
+        buildBoard(sudokuString);
     }
 
     public void onMouseClick(MouseEvent e){
-        CellGUI cell = new CellGUI();
+        CellGUI cell;
         Node clickedNode = e.getPickResult().getIntersectedNode();
         if (clickedNode != this) {
             // click on descendant node
@@ -31,9 +36,9 @@ public class SudokuBoard extends GridPane {
                 clickedNode = parent;
                 parent = clickedNode.getParent();
             }
-            Integer colIndex = GridPane.getColumnIndex(clickedNode);
+/*            Integer colIndex = GridPane.getColumnIndex(clickedNode);
             Integer rowIndex = GridPane.getRowIndex(clickedNode);
-            System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex);
+            System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex);*/
         }
 
         cell = (CellGUI) clickedNode;
@@ -43,29 +48,36 @@ public class SudokuBoard extends GridPane {
         currentCell.setSelected(true);
     }
 
-    /*TODO: add if/else blocks once functionality has been implemented to switch between adding possibles or solutions to board
-    *  */
+
     public void keyPressed(KeyEvent e){
         KeyCode keyPressed = e.getCode();
         switch (keyPressed){
-            case DIGIT1, NUMPAD1 -> {currentCell.updatePencilMarks(1);}
-            case DIGIT2, NUMPAD2 -> {currentCell.updatePencilMarks(2);}
-            case DIGIT3, NUMPAD3 -> {currentCell.updatePencilMarks(3);}
-            case DIGIT4, NUMPAD4 -> {currentCell.updatePencilMarks(4);}
-            case DIGIT5, NUMPAD5 -> {currentCell.updatePencilMarks(5);}
-            case DIGIT6, NUMPAD6 -> {currentCell.updatePencilMarks(6);}
-            case DIGIT7, NUMPAD7 -> {currentCell.updatePencilMarks(7);}
-            case DIGIT8, NUMPAD8 -> {currentCell.updatePencilMarks(8);}
-            case DIGIT9, NUMPAD9 -> {currentCell.updatePencilMarks(9);}
+            case DIGIT1, NUMPAD1 -> {currentCell.handleNumberInput(1);}
+            case DIGIT2, NUMPAD2 -> {currentCell.handleNumberInput(2);}
+            case DIGIT3, NUMPAD3 -> {currentCell.handleNumberInput(3);}
+            case DIGIT4, NUMPAD4 -> {currentCell.handleNumberInput(4);}
+            case DIGIT5, NUMPAD5 -> {currentCell.handleNumberInput(5);}
+            case DIGIT6, NUMPAD6 -> {currentCell.handleNumberInput(6);}
+            case DIGIT7, NUMPAD7 -> {currentCell.handleNumberInput(7);}
+            case DIGIT8, NUMPAD8 -> {currentCell.handleNumberInput(8);}
+            case DIGIT9, NUMPAD9 -> {currentCell.handleNumberInput(9);}
+            case BACK_SPACE -> {currentCell.handleNumberInput(0);}
+            case P -> {
+                for (Node node: this.getChildren()) {
+                    ((CellGUI) node).updateEditPencilMarks();
+                }
+            }
             default -> {}
 
         }
     }
 
-    private void buildBoard(){
+    //TODO: in the future when a user can enter their own board, have to verify theres at least 17-integers, this is the minimum amount of clues for a valid board
+    private void buildBoard(String sudokuBoard){
+        int index = 0;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                CellGUI cell = new CellGUI(i, j);
+                CellGUI cell = new CellGUI( sudokuBoard.charAt(index),i, j);
                 cell.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, null, null)));
 
                 //following code is used to help visual the sudoku board better by making each quadrant lines thicker than each individual square
@@ -159,6 +171,7 @@ public class SudokuBoard extends GridPane {
                         cell.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1, 1, 0, 1), null)));
                     }
                 }
+                index++;
                 super.add(cell, j, i );
             }
 

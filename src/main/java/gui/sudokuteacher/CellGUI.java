@@ -4,18 +4,21 @@ package gui.sudokuteacher;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 
 
 public class CellGUI extends StackPane  {
     private GridPane cellPossibilityGridPane;
-    //private boolean[] possiblesInCell;
+    private Text solution;
+    private boolean isSolutionHint;
     private boolean selected;
+    private boolean editPencilMarks;
     int row;
     int column;
 
@@ -33,22 +36,33 @@ public class CellGUI extends StackPane  {
     public CellGUI(int row, int column) {
         super();
         selected = false;
-        //possiblesInCell = new boolean[9];
         this.row = row;
         this.column = column;
-
+        editPencilMarks = false;
+        solution = new Text("");
+        solution.setFont(Font.font("Comic Sans MS", FontWeight.BLACK, 35));
         createPencilMarks();
-        super.getChildren().add(cellPossibilityGridPane);
 
-        super.setOnMouseClicked((MouseEvent e) -> {
-            System.out.println("(Row: " + row + " Column: " + column + ") clicked");
-        });
-
+        super.getChildren().addAll(solution, cellPossibilityGridPane);
     }
 
-    public CellGUI(String solution, int row, int column) {
+    public CellGUI(char solution, int row, int column) {
         super();
-        super.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1))));
+        selected = false;
+        this.row = row;
+        this.column = column;
+        String solutionChar = String.valueOf(solution);
+        if(Character.isDigit(solution) && Integer.parseInt(solutionChar) > 0){
+            isSolutionHint = true;
+            this.solution = new Text(solutionChar);
+            super.getChildren().addAll(this.solution);
+        }else{
+            this.solution = new Text("");
+            createPencilMarks();
+            super.getChildren().addAll(this.solution, cellPossibilityGridPane);
+        }
+
+        this.solution.setFont(Font.font("Comic Sans MS", FontWeight.BLACK, 35));
     }
 
     public boolean isSelected(){
@@ -66,14 +80,41 @@ public class CellGUI extends StackPane  {
         }
     }
 
-    public void updatePencilMarks(int possible){
+    public void handleNumberInput(int number){
+        if(!isSolutionHint) {
+            if (editPencilMarks) {
+                if (solution.getText().equals("")) {
+                    updatePencilMarks(number);
+                }
+            } else {
+                updateSolution(number);
+            }
+        }
+    }
+
+    public void updateEditPencilMarks(){
+        editPencilMarks = !editPencilMarks;
+    }
+
+    private void updateSolution(int solution){
+        if(!editPencilMarks && solution > 0) {
+            this.solution.setText(Integer.toString(solution));
+            for (Node node: cellPossibilityGridPane.getChildren()) {
+                ((Text) node).setVisible(false);
+            }
+        }else if(solution == 0){
+            this.solution.setText("");
+
+        }
+    }
+
+    private void updatePencilMarks(int possible){
 
         if(cellPossibilityGridPane.getChildren().get(possible - 1).isVisible()){
             cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
         }else{
             cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
         }
-
     }
 
     private void createPencilMarks() {
@@ -83,42 +124,16 @@ public class CellGUI extends StackPane  {
             cellPossibilityGridPane.getRowConstraints().add(new RowConstraints(15));
         }
 
-        Text text1 = new Text("1");
-        Text text2 = new Text("2");
-        Text text3 = new Text("3");
-        Text text4 = new Text("4");
-        Text text5 = new Text("5");
-        Text text6 = new Text("6");
-        Text text7 = new Text("7");
-        Text text8 = new Text("8");
-        Text text9 = new Text("9");
-        text1.setVisible(false);
-        text2.setVisible(false);
-        text3.setVisible(false);
-        text4.setVisible(false);
-        text5.setVisible(false);
-        text6.setVisible(false);
-        text7.setVisible(false);
-        text8.setVisible(false);
-        text9.setVisible(false);
-        cellPossibilityGridPane.add(text1, 0, 0);
-        cellPossibilityGridPane.add(text2, 1, 0);
-        cellPossibilityGridPane.add(text3, 2, 0);
-        cellPossibilityGridPane.add(text4, 0, 1);
-        cellPossibilityGridPane.add(text5, 1, 1);
-        cellPossibilityGridPane.add(text6, 2, 1);
-        cellPossibilityGridPane.add(text7, 0, 2);
-        cellPossibilityGridPane.add(text8, 1, 2);
-        cellPossibilityGridPane.add(text9, 2, 2);
-        GridPane.setHalignment(text1, HPos.CENTER);
-        GridPane.setHalignment(text2, HPos.CENTER);
-        GridPane.setHalignment(text3, HPos.CENTER);
-        GridPane.setHalignment(text4, HPos.CENTER);
-        GridPane.setHalignment(text5, HPos.CENTER);
-        GridPane.setHalignment(text6, HPos.CENTER);
-        GridPane.setHalignment(text7, HPos.CENTER);
-        GridPane.setHalignment(text8, HPos.CENTER);
-        GridPane.setHalignment(text9, HPos.CENTER);
+        int possible = 1;
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 3; column++) {
+                Text text = new Text(Integer.toString(possible));
+                text.setVisible(false);
+                cellPossibilityGridPane.add(text, column, row);
+                GridPane.setHalignment(text, HPos.CENTER);
+                possible++;
+            }
+        }
 
         cellPossibilityGridPane.alignmentProperty().set(Pos.CENTER);
 
