@@ -49,6 +49,10 @@ public class SudokuBoard extends GridPane {
     }
 
 
+    /**
+     * keyPressed has been modified to support arrow keys
+     * moveCell and getNode were added
+     */
     public void keyPressed(KeyEvent e){
         KeyCode keyPressed = e.getCode();
         switch (keyPressed){
@@ -62,14 +66,42 @@ public class SudokuBoard extends GridPane {
             case DIGIT8, NUMPAD8 -> {currentCell.handleNumberInput(8);}
             case DIGIT9, NUMPAD9 -> {currentCell.handleNumberInput(9);}
             case BACK_SPACE -> {currentCell.handleNumberInput(0);}
+            case LEFT -> moveCell(-1, 0);
+            case RIGHT -> moveCell(1, 0);
+            case UP -> moveCell(0, -1);
+            case DOWN -> moveCell(0, 1);
             case P -> {
                 for (Node node: this.getChildren()) {
                     ((CellGUI) node).updateEditPencilMarks();
                 }
             }
             default -> {}
-
         }
+    }
+
+    private void moveCell(int dx, int dy) {
+        int currentRow = GridPane.getRowIndex(currentCell);
+        int currentCol = GridPane.getColumnIndex(currentCell);
+        int newRow = Math.min(Math.max(0, currentRow + dy), 8);
+        int newCol = Math.min(Math.max(0, currentCol + dx), 8);
+        Node nextCell = getNodeByRowColumnIndex(newRow, newCol);
+        if (nextCell instanceof CellGUI) {
+            currentCell.setSelected(false);
+            currentCell = (CellGUI) nextCell;
+            currentCell.setSelected(true);
+        }
+    }
+
+    private Node getNodeByRowColumnIndex(final int row, final int column) {
+        Node result = null;
+        ObservableList<Node> children = this.getChildren();
+        for (Node node : children) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+        return result;
     }
 
     //TODO: in the future when a user can enter their own board, have to verify theres at least 17-integers, this is the minimum amount of clues for a valid board
