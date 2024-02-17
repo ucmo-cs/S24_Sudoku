@@ -5,7 +5,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,25 +24,9 @@ public class CellGUI extends StackPane  {
 
     public CellGUI() {
         super();
-
         createPencilMarks();
         this.getChildren().add(cellPossibilityGridPane);
-        super.setOnMouseClicked((MouseEvent e) -> {
-            System.out.println("(Row: " + row + " Column: " + column + ") clicked");
-        });
 
-    }
-    public CellGUI(int row, int column) {
-        super();
-        selected = false;
-        this.row = row;
-        this.column = column;
-        editPencilMarks = false;
-        solution = new Text("");
-        solution.setFont(Font.font("Comic Sans MS", FontWeight.BLACK, 35));
-        createPencilMarks();
-
-        super.getChildren().addAll(solution, cellPossibilityGridPane);
     }
 
     public CellGUI(char solution, int row, int column) {
@@ -69,27 +52,36 @@ public class CellGUI extends StackPane  {
         return selected;
     }
 
-
-    public void setSelected(boolean b){
-        if(b){
-            super.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE,
-                    CornerRadii.EMPTY, Insets.EMPTY)));
+    public int getSolution(){
+        if(this.solution.getText().equals("")){
+            return 0;
         }else{
-            super.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT,
-                    CornerRadii.EMPTY, Insets.EMPTY)));
+            return  Integer.parseInt(this.solution.getText());
         }
     }
 
-    public void handleNumberInput(int number){
+
+    public void setSelected(boolean b){
+        if(b){
+            super.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        }else{
+            super.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+    }
+
+    public boolean handleNumberInput(int number){
+        boolean numberAdded = false;
         if(!isSolutionHint) {
             if (editPencilMarks) {
-                if (solution.getText().equals("")) {
+                if (solution.getText().equals("") && number > 0) {
                     updatePencilMarks(number);
                 }
             } else {
                 updateSolution(number);
+                numberAdded = true;
             }
         }
+        return numberAdded;
     }
 
     public void updateEditPencilMarks(){
@@ -99,6 +91,7 @@ public class CellGUI extends StackPane  {
     private void updateSolution(int solution){
         if(!editPencilMarks && solution > 0) {
             this.solution.setText(Integer.toString(solution));
+            this.solution.setFill(Color.DARKBLUE);
             for (Node node: cellPossibilityGridPane.getChildren()) {
                 ((Text) node).setVisible(false);
             }

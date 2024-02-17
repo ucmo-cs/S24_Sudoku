@@ -25,6 +25,7 @@ public class HelloApplication extends Application {
         anchorPane.setLayoutX(10);
         anchorPane.getChildren().add(sudoku);
         Scene scene = new Scene(anchorPane, 500, 500);
+        //TODO: fix the setOnKeyPress issue, this runs all mouse clicks through board logic which wont work for the application later
         scene.setOnKeyPressed(sudoku.getOnKeyPressed());
         stage.setTitle("Hello!");
         stage.setScene(scene);

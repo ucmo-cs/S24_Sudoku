@@ -1,5 +1,5 @@
 package gui.sudokuteacher;
-
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -7,6 +7,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.nio.charset.CharsetEncoder;
 
 
 public class SudokuBoard extends GridPane {
@@ -14,6 +15,8 @@ public class SudokuBoard extends GridPane {
 
     public SudokuBoard(String sudokuString) {
         super();
+        super.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+
         if(sudokuString.length() != 81){
             System.out.println("There needs to be 81 characters to make a sudoku");
             return;
@@ -22,8 +25,8 @@ public class SudokuBoard extends GridPane {
         setOnMouseClicked(this::onMouseClick);
         currentCell = new CellGUI();
         super.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(4, 4, 4, 4), null)));
-
         buildBoard(sudokuString);
+        super.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, null, null)));
     }
 
     public void onMouseClick(MouseEvent e){
@@ -54,17 +57,36 @@ public class SudokuBoard extends GridPane {
      * moveCell and getNode were added
      */
     public void keyPressed(KeyEvent e){
+        boolean numberAdded = false;
         KeyCode keyPressed = e.getCode();
         switch (keyPressed){
-            case DIGIT1, NUMPAD1 -> {currentCell.handleNumberInput(1);}
-            case DIGIT2, NUMPAD2 -> {currentCell.handleNumberInput(2);}
-            case DIGIT3, NUMPAD3 -> {currentCell.handleNumberInput(3);}
-            case DIGIT4, NUMPAD4 -> {currentCell.handleNumberInput(4);}
-            case DIGIT5, NUMPAD5 -> {currentCell.handleNumberInput(5);}
-            case DIGIT6, NUMPAD6 -> {currentCell.handleNumberInput(6);}
-            case DIGIT7, NUMPAD7 -> {currentCell.handleNumberInput(7);}
-            case DIGIT8, NUMPAD8 -> {currentCell.handleNumberInput(8);}
-            case DIGIT9, NUMPAD9 -> {currentCell.handleNumberInput(9);}
+            case DIGIT1, NUMPAD1 -> { if(currentCell.handleNumberInput(1)){
+                numberAdded = true;
+            }}
+            case DIGIT2, NUMPAD2 -> { if(currentCell.handleNumberInput(2)){
+                numberAdded = true;
+            }}
+            case DIGIT3, NUMPAD3 -> { if(currentCell.handleNumberInput(3)){
+                numberAdded = true;
+            }}
+            case DIGIT4, NUMPAD4 -> { if(currentCell.handleNumberInput(4)){
+                numberAdded = true;
+            }}
+            case DIGIT5, NUMPAD5 -> { if(currentCell.handleNumberInput(5)){
+                numberAdded = true;
+            }}
+            case DIGIT6, NUMPAD6 -> { if(currentCell.handleNumberInput(6)){
+                numberAdded = true;
+            }}
+            case DIGIT7, NUMPAD7 -> { if(currentCell.handleNumberInput(7)){
+                numberAdded = true;
+            }}
+            case DIGIT8, NUMPAD8 -> { if(currentCell.handleNumberInput(8)){
+                numberAdded = true;
+            }}
+            case DIGIT9, NUMPAD9 -> { if(currentCell.handleNumberInput(9)){
+                numberAdded = true;
+            }}
             case BACK_SPACE -> {currentCell.handleNumberInput(0);}
             case LEFT -> moveCell(-1, 0);
             case RIGHT -> moveCell(1, 0);
@@ -77,6 +99,72 @@ public class SudokuBoard extends GridPane {
             }
             default -> {}
         }
+        if(numberAdded){
+            if(checkIsBoardSolved()){
+                //TODO: end game logic
+            }
+
+        }
+    }
+
+    private boolean checkIsBoardSolved(){
+        for (int row = 0; row < 9; row++) {
+            int rowSum = 0;
+            int columnSum = 0;
+            for (int column = 0; column < 9; column++) {
+                 int rowCellSolution = ((CellGUI) getNodeByRowColumnIndex(row, column)).getSolution();
+                 int columnCellSolution = ((CellGUI) getNodeByRowColumnIndex(column, row)).getSolution();
+                 if(rowCellSolution == 0){
+                     return false;
+                 }else {
+                     rowSum += rowCellSolution;
+                 }
+
+                if(columnCellSolution == 0){
+                    return false;
+                }else{
+                    columnSum += columnCellSolution;
+                }
+            }
+            if(rowSum != 45 && columnSum != 45){
+                //board is unsolved OR solved incorrectly
+                System.out.println("There is an error in the board");
+                return false;
+            }
+        }
+
+        for (int boxRowTop = 0; boxRowTop < 3; boxRowTop++) {
+            for (int boxColumnTop = 0; boxColumnTop < 3; boxColumnTop++) {
+                if(!checkIsBoardSolvedBoxHelper(boxRowTop * 3, boxColumnTop * 3)){
+                    System.out.println("There is an error in the board");
+                    return false;
+                }
+            }
+        }
+
+        System.out.println("Board is solved!");
+
+        return true;
+    }
+
+    private boolean checkIsBoardSolvedBoxHelper(int boxRowTop, int boxColumnTop){
+        boolean isBoxValid = false;
+
+        int boxSum = 0;
+        for (int boxRow = boxRowTop; boxRow < boxRowTop + 3 ; boxRow++) {
+            for (int boxColumn = boxColumnTop; boxColumn < boxColumnTop + 3; boxColumn++) {
+                int boxCellSolution = ((CellGUI) getNodeByRowColumnIndex(boxRow, boxColumn)).getSolution();
+                if(boxCellSolution == 0){
+                    return isBoxValid;
+                }else{
+                    boxSum += boxCellSolution;
+                }
+            }
+        }
+        if(boxSum == 45){
+            isBoxValid = true;
+        }
+        return isBoxValid;
     }
 
     private void moveCell(int dx, int dy) {
@@ -94,8 +182,7 @@ public class SudokuBoard extends GridPane {
 
     private Node getNodeByRowColumnIndex(final int row, final int column) {
         Node result = null;
-        ObservableList<Node> children = this.getChildren();
-        for (Node node : children) {
+        for (Node node : this.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 result = node;
                 break;
@@ -110,8 +197,6 @@ public class SudokuBoard extends GridPane {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 CellGUI cell = new CellGUI( sudokuBoard.charAt(index),i, j);
-                cell.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, null, null)));
-
                 //following code is used to help visual the sudoku board better by making each quadrant lines thicker than each individual square
                 //sets style for top row of sudoku
                 if ((i == 0 )) {

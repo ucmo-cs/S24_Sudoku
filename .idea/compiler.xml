@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="SudokuTeacher" options="--add-exports javafx.graphics/com.sun.javafx.scene=solver.sudokuteacher --add-exports javafx.graphics/com.sun.javafx.scene.traversal=solver.sudokuteacher" />
+      <module name="SudokuTeacher" options="" />
     </option>
   </component>
 </project>
