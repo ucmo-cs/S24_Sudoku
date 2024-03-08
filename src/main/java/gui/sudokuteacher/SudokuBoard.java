@@ -7,9 +7,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import java.nio.charset.CharsetEncoder;
-
-
 public class SudokuBoard extends GridPane {
     CellGUI currentCell;
 
@@ -39,9 +36,6 @@ public class SudokuBoard extends GridPane {
                 clickedNode = parent;
                 parent = clickedNode.getParent();
             }
-/*            Integer colIndex = GridPane.getColumnIndex(clickedNode);
-            Integer rowIndex = GridPane.getRowIndex(clickedNode);
-            System.out.println("Mouse clicked cell: " + rowIndex + " And: " + colIndex);*/
         }
 
         cell = (CellGUI) clickedNode;

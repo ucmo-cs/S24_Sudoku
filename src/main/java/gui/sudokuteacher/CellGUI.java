@@ -93,7 +93,7 @@ public class CellGUI extends StackPane  {
             this.solution.setText(Integer.toString(solution));
             this.solution.setFill(Color.DARKBLUE);
             for (Node node: cellPossibilityGridPane.getChildren()) {
-                ((Text) node).setVisible(false);
+                node.setVisible(false);
             }
         }else if(solution == 0){
             this.solution.setText("");
@@ -103,11 +103,7 @@ public class CellGUI extends StackPane  {
 
     private void updatePencilMarks(int possible){
 
-        if(cellPossibilityGridPane.getChildren().get(possible - 1).isVisible()){
-            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
-        }else{
-            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
-        }
+        cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(!cellPossibilityGridPane.getChildren().get(possible - 1).isVisible());
     }
 
     private void createPencilMarks() {

@@ -15,7 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import solver.sudokuteacher.Sudoku;
+import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
 import java.io.IOException;
 
@@ -195,7 +195,7 @@ public class SudokuSolverGUI extends Application {
         borderPane.topProperty();
         borderPane.setTop(title);
 
-        borderPane.setAlignment(title, Pos.CENTER);
+        BorderPane.setAlignment(title, Pos.CENTER);
         borderPane.setCenter(gridPane);
 
 

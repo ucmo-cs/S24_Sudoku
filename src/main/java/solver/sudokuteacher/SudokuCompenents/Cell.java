@@ -1,10 +1,10 @@
-package solver.sudokuteacher;
+package solver.sudokuteacher.SudokuCompenents;
 import java.util.ArrayList;
 
 public class Cell  {
 
-    private volatile int solution;
-    private volatile ArrayList<Integer> possibilities = new ArrayList<>();
+    private int solution;
+    private final ArrayList<Integer> possibilities = new ArrayList<>();
     private int row;
     private int column;
 
@@ -18,26 +18,15 @@ public class Cell  {
         }
         this.row = row;
         this.column = column;
-
-    }
-    public Cell(Cell cell, int row, int column){
-        this.solution = cell.solution;
-        this.possibilities = cell.possibilities;
-        this.row = row;
-        this.column = column;
     }
 
     public Cell(){}
+
+
+
     public ArrayList<Integer> getPossibilities(){
         return possibilities;
     }
-    public void setRow(int row){
-        this.row = row;
-    }
-    public void setColumn(int column){
-        this.column = column;
-    }
-
     public void setSolution(int val){
         this.solution = val;
     }
