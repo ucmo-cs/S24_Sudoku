@@ -51,4 +51,9 @@ public class RecursiveGuess extends SolvingStrategy{
         return !sudoku.isUnsolved();
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
 }

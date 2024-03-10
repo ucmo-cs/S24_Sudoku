@@ -75,6 +75,12 @@ public class EmptyRectangle extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
+
     private boolean emptyRectangleStrategyRowHelper(ArrayList<LinkedList<Cell>> cellsInRowWithStrongLink, int possible){
         boolean flag = false;
 

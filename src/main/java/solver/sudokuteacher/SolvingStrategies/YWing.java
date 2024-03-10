@@ -69,6 +69,11 @@ public class YWing extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
     private boolean yWingFinderHelper(LinkedList<Cell> possibleYWing){
         int hingeCellPossible1 = possibleYWing.getFirst().getPossibilities().get(0);
         int hingeCellPossible2 = possibleYWing.getFirst().getPossibilities().get(1);

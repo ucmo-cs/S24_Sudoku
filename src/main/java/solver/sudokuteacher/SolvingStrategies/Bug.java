@@ -66,4 +66,10 @@ public class Bug extends SolvingStrategy{
 
         return flag;
     }
+
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
 }

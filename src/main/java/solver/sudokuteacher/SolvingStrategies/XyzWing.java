@@ -28,6 +28,11 @@ public class XyzWing extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
     private boolean xyzWingFinder(Cell hingeCell){
         boolean flag = false;
         int hingeCellRow = hingeCell.getRow();

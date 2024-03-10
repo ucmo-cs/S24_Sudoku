@@ -1,6 +1,5 @@
 package solver.sudokuteacher.SolvingStrategies;
 
-import solver.sudokuteacher.SudokuCompenents.Cell;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ public class BoxLineReduction extends SolvingStrategy{
     public BoxLineReduction(Sudoku sudoku) {
       super(sudoku);
     }
+
     @Override
     public boolean executeStrategy(){
         boolean flag = false;
@@ -23,6 +23,11 @@ public class BoxLineReduction extends SolvingStrategy{
         }
 
         return flag;
+    }
+
+    @Override
+    public boolean findValidExecutions() {
+        return false;
     }
 
     private boolean boxLineReductionHelper(int row, int column){

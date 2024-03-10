@@ -38,6 +38,11 @@ public class AlternatingInferenceChain extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
     private boolean findAicChainEliminations(LinkedList<LinkedList<AICChainNode>> aicChain){
         boolean flag = false;
         ArrayList<AICChainNode> aicChainEnds = findAicChainEnds(aicChain);

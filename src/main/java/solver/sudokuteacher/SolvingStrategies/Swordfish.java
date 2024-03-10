@@ -27,6 +27,10 @@ public class Swordfish extends SolvingStrategy{
 
         return flag;
     }
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
 
     private boolean swordfishRow(int possible){
         boolean flag = false;

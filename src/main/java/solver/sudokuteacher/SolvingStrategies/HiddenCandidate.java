@@ -9,13 +9,9 @@ public class HiddenCandidate extends SolvingStrategy{
 
     int candidateNumber;
 
-    public HiddenCandidate(Sudoku sudoku) {
+    public HiddenCandidate(Sudoku sudoku, int candidateNumber) {
         super(sudoku);
-    }
-
-    public boolean executeStrategy(int candidateNumber){
         this.candidateNumber = candidateNumber;
-        return executeStrategy();
     }
 
     @Override
@@ -38,6 +34,11 @@ public class HiddenCandidate extends SolvingStrategy{
             }
         }
         return flag;
+    }
+
+    @Override
+    public boolean findValidExecutions() {
+        return false;
     }
 
     private boolean hiddenCandidateRow(int row, int candidateNumber){

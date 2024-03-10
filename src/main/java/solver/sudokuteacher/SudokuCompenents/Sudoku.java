@@ -1,6 +1,7 @@
 package solver.sudokuteacher.SudokuCompenents;
 
 import solver.sudokuteacher.SolvingStrategies.*;
+import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,7 +15,8 @@ public class Sudoku {
 
     private final Cell[][] sudoku = new Cell[9][9];
     private boolean invalidCell = false;
-    NakedSingle ns;
+    ArrayList<SolvingStrategy> strategies;
+/*    NakedSingle ns;
     HiddenSingle hs;
     NakedCandidate nc;
     HiddenCandidate hc;
@@ -30,7 +32,7 @@ public class Sudoku {
     XChain xChain;
     XYChain xyChain;
     AlternatingInferenceChain aic;
-    RecursiveGuess guess;
+    RecursiveGuess guess;*/
 
     public Sudoku(int[][] sudoku) {
 
@@ -47,6 +49,7 @@ public class Sudoku {
                 }
             }
         }
+
         initializeStrategies();
     }
 
@@ -163,67 +166,90 @@ public class Sudoku {
     }
 
     private void initializeStrategies(){
-         ns = new NakedSingle(this);
-         hs = new HiddenSingle(this);
-         nc = new NakedCandidate(this);
-         hc = new HiddenCandidate(this);
-         pp = new PointingPairsAndTriples(this);
-         blr = new BoxLineReduction(this);
-         xWing = new XWing(this);
-         sc = new SimpleColoring(this);
-         yWing = new YWing(this);
-         er = new EmptyRectangle(this);
-         sf = new Swordfish(this);
-         xyzWing = new XyzWing(this);
-         bug = new Bug(this);
-         xChain = new XChain(this);
-         xyChain = new XYChain(this);
-         aic = new AlternatingInferenceChain(this);
-         guess = new RecursiveGuess(this);
+        this.strategies = new ArrayList<>(21);
+        NakedSingle ns = new NakedSingle(this);
+        HiddenSingle hs = new HiddenSingle(this);
+        NakedCandidate np = new NakedCandidate(this, 2);
+        NakedCandidate nc2 = new NakedCandidate(this, 3);
+        NakedCandidate nc3 = new NakedCandidate(this, 4);
+        HiddenCandidate hc1 = new HiddenCandidate(this,2);
+        HiddenCandidate hc2 = new HiddenCandidate(this,3);
+        HiddenCandidate hc3 = new HiddenCandidate(this,4);
+        PointingPairsAndTriples pp = new PointingPairsAndTriples(this);
+        BoxLineReduction blr = new BoxLineReduction(this);
+        XWing xWing = new XWing(this);
+        SimpleColoring sc = new SimpleColoring(this);
+        YWing yWing = new YWing(this);
+        EmptyRectangle er = new EmptyRectangle(this);
+        Swordfish sf = new Swordfish(this);
+        XyzWing xyzWing = new XyzWing(this);
+        Bug bug = new Bug(this);
+        XChain xChain = new XChain(this);
+        XYChain xyChain = new XYChain(this);
+        AlternatingInferenceChain aic = new AlternatingInferenceChain(this);
+        RecursiveGuess guess = new RecursiveGuess(this);
+
+        strategies.add(ns);
+        strategies.add(hs);
+        strategies.add(np);/*
+        strategies.add(nc2);
+        strategies.add(nc3);
+        strategies.add(hc1);
+        strategies.add(hc2);
+        strategies.add(hc3);
+        strategies.add(pp);
+        strategies.add(blr);
+        strategies.add(xWing);
+        strategies.add(sc);
+        strategies.add(yWing);
+        strategies.add(er);
+        strategies.add(sf);
+        strategies.add(xyzWing);
+        strategies.add(bug);
+        strategies.add(xChain);
+        strategies.add(xyChain);
+        strategies.add(aic);*/
+        strategies.add(guess);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     public boolean solve() {
         boolean guess = false;
+
         do {
-            if (ns.executeStrategy()){
-            } else if (hs.executeStrategy()){
-            } else if (nc.executeStrategy( 2)) {
-            } else if (nc.executeStrategy( 3)) {
-            } else if (nc.executeStrategy( 4)) {
-            } else if (hc.executeStrategy(2)) {
-            } else if (hc.executeStrategy( 3)) {
-            } else if (hc.executeStrategy( 4)) {
-            } else if (pp.executeStrategy()) {
-            } else if (blr.executeStrategy()) {
-            } else if (xWing.executeStrategy()) {
-            } else if (sc.executeStrategy()){
-            } else if (yWing.executeStrategy()) {
-            } else if (er.executeStrategy()){
-            } else if (sf.executeStrategy()){
-            } else if (xyzWing.executeStrategy()){
-            } else if (bug.executeStrategy()){
-            } else if (xChain.executeStrategy()){
-            } else if (xyChain.executeStrategy()){
-            } else if (aic.executeStrategy()){
-            } else {
-                if(guess) {
-                    if(checkSolution()){
-                        return true;
-                    }else if(invalidCell){
+            for (SolvingStrategy strategy : strategies) {
+                if (strategy.getClass().getName().contains("RecursiveGuess")) {
+                    if (guess) {
+                        if (checkSolution()) {
+                            return true;
+                        } else if (invalidCell) {
+                            return false;
+                        } else {
+                            return strategy.executeStrategy();
+                        }
+
+                    } else {
                         return false;
-                    }else{
-                        return this.guess.executeStrategy();
                     }
-
-                }else{
-                    return false;
+                } else {
+                    if(strategy.executeStrategy()){
+                        break;
+                    }
                 }
+
             }
-
-        }  while (isUnsolved()) ;
-
+        }while(isUnsolved());
         return checkSolution();
+    }
+
+    public ArrayList<StrategyModel> getNextStrategy(){
+
+        for (SolvingStrategy strategy: strategies) {
+            if(strategy.findValidExecutions()){
+                return strategy.getStrategyModels();
+            }
+        }
+        return null;
     }
 
     public void updateCellSolution(Cell cell, int solution){
@@ -231,6 +257,43 @@ public class Sudoku {
         cell.getPossibilities().clear();
         removeSolutionFromAffectedPossibilities(cell.getRow(),cell.getColumn(), solution);
 
+    }
+
+    public void removeSolutionFromCell(Cell cell){
+        int solutionToBeRemoved = cell.getSolution();
+        cell.setSolution(0);
+
+        int[] cellPossibles = new int[9];
+        for (int i = 1; i < 10; i++) {
+            cellPossibles[i - 1] = i;
+        }
+        ArrayList<Cell> cellsSeenByCell = allCellsSeenHelper(cell);
+
+        for (Cell cellSeen: cellsSeenByCell) {
+            int cellSolution = cellSeen.getSolution();
+            if(cellSeen.getSolution() > 0){
+                cellPossibles[cellSolution - 1] = 0;
+            }else{
+                if(isPossibleValidInCell(cellSeen, solutionToBeRemoved)){
+                    cellSeen.getPossibilities().add(solutionToBeRemoved);
+                }
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if(cellPossibles[i] > 0){
+                cell.getPossibilities().add(cellPossibles[i]);
+            }
+        }
+    }
+
+    private boolean isPossibleValidInCell(Cell cell, int possible){
+        ArrayList<Cell> cellsSeenByCell = allCellsSeenHelper(cell);
+        for (Cell cellSeen: cellsSeenByCell) {
+            if(cellSeen.getSolution() == possible){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void removeSolutionFromAffectedPossibilities(int row, int column, int value){
@@ -262,6 +325,34 @@ public class Sudoku {
                 }
             }
         }
+    }
+
+    public ArrayList<Cell> getCellsInRow(int row){
+        ArrayList<Cell> cellsInUnit = new ArrayList<>(9);
+
+        for (int column = 0; column < 9; column++) {
+            cellsInUnit.add(sudoku[row][column]);
+        }
+        return cellsInUnit;
+    }
+    public ArrayList<Cell> getCellsInColumn(int column){
+        ArrayList<Cell> cellsInUnit = new ArrayList<>(9);
+        for (int row = 0; row < 9; row++) {
+            cellsInUnit.add(sudoku[row][column]);
+        }
+        return cellsInUnit;
+    }
+    public ArrayList<Cell> getCellsInBox(int[] boxTop){
+        if(boxTop.length != 2){return null;}
+        ArrayList<Cell> cellsInUnit = new ArrayList<>(9);
+        for (int boxRow = boxTop[0]; boxRow < 3 + boxTop[0]; boxRow++) {
+            for (int boxColumn = boxTop[1]; boxColumn < 3 + boxTop[1]; boxColumn++) {
+                cellsInUnit.add(sudoku[boxRow][boxColumn]);
+            }
+        }
+
+        return cellsInUnit;
+
     }
 
     public boolean doCellsSeeEachOther(Cell cell1, Cell cell2){
@@ -413,6 +504,39 @@ public class Sudoku {
         //column
         for (int i = 0; i < 9; i++) {
             if(!cellsSeen.contains(sudoku[i][column]) && sudoku[i][column].getSolution() == 0 && i != row){
+                cellsSeen.add(sudoku[i][column]);
+            }
+        }
+
+        return cellsSeen;
+    }
+
+    public ArrayList<Cell> allCellsSeenHelper(Cell cell){
+
+        ArrayList<Cell> cellsSeen = new ArrayList<>();
+
+        int row = cell.getRow();
+        int column = cell.getColumn();
+        int[] box = getBox(row, column);
+
+        //box
+        for (int boxRow = box[0]; boxRow < 3 + box[0]; boxRow++) {
+            for (int boxColumn = box[1]; boxColumn < 3 + box[1]; boxColumn++) {
+                if(sudoku[boxRow][boxColumn] != cell && !cellsSeen.contains(sudoku[boxRow][boxColumn])){
+                    cellsSeen.add(sudoku[boxRow][boxColumn]);
+                }
+            }
+        }
+        //row
+        for (int i = 0; i < 9; i++) {
+            if(!cellsSeen.contains(sudoku[row][i]) && sudoku[row][i] != cell){
+                cellsSeen.add(sudoku[row][i]);
+            }
+        }
+
+        //column
+        for (int i = 0; i < 9; i++) {
+            if(!cellsSeen.contains(sudoku[i][column]) && sudoku[i][column] != cell){
                 cellsSeen.add(sudoku[i][column]);
             }
         }
