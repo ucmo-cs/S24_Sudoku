@@ -1,7 +1,6 @@
 package gui.sudokuteacher;
-import javafx.collections.ObservableList;
+
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 
 public class SudokuBoardView extends GridPane {
 
-    //ArrayList<CellController> cellsInBoard;
     CellController[][] cellsInBoard;
 
     public SudokuBoardView(Sudoku sudoku){
@@ -25,71 +23,6 @@ public class SudokuBoardView extends GridPane {
     public CellController[][] getCellsInBoard(){
         return this.cellsInBoard;
     }
-
-    /**
-     * keyPressed has been modified to support arrow keys
-     * moveCell and getNode were added
-     */
-
-/*    private boolean checkIsBoardSolved(){
-        for (int row = 0; row < 9; row++) {
-            int rowSum = 0;
-            int columnSum = 0;
-            for (int column = 0; column < 9; column++) {
-                 int rowCellSolution = ((CellView) getNodeByRowColumnIndex(row, column)).getSolution();
-                 int columnCellSolution = ((CellView) getNodeByRowColumnIndex(column, row)).getSolution();
-                 if(rowCellSolution == 0){
-                     return false;
-                 }else {
-                     rowSum += rowCellSolution;
-                 }
-
-                if(columnCellSolution == 0){
-                    return false;
-                }else{
-                    columnSum += columnCellSolution;
-                }
-            }
-            if(rowSum != 45 && columnSum != 45){
-                //board is unsolved OR solved incorrectly
-                System.out.println("There is an error in the board");
-                return false;
-            }
-        }
-
-        for (int boxRowTop = 0; boxRowTop < 3; boxRowTop++) {
-            for (int boxColumnTop = 0; boxColumnTop < 3; boxColumnTop++) {
-                if(!checkIsBoardSolvedBoxHelper(boxRowTop * 3, boxColumnTop * 3)){
-                    System.out.println("There is an error in the board");
-                    return false;
-                }
-            }
-        }
-
-        System.out.println("Board is solved!");
-
-        return true;
-    }*/
-
-/*    private boolean checkIsBoardSolvedBoxHelper(int boxRowTop, int boxColumnTop){
-        boolean isBoxValid = false;
-
-        int boxSum = 0;
-        for (int boxRow = boxRowTop; boxRow < boxRowTop + 3 ; boxRow++) {
-            for (int boxColumn = boxColumnTop; boxColumn < boxColumnTop + 3; boxColumn++) {
-                int boxCellSolution = ((CellView) getNodeByRowColumnIndex(boxRow, boxColumn)).getSolution();
-                if(boxCellSolution == 0){
-                    return isBoxValid;
-                }else{
-                    boxSum += boxCellSolution;
-                }
-            }
-        }
-        if(boxSum == 45){
-            isBoxValid = true;
-        }
-        return isBoxValid;
-    }*/
 
     private void buildBoard(Sudoku sudoku){
         int index = 0;

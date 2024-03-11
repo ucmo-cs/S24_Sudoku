@@ -15,7 +15,7 @@ public class CellController {
     int cellValue;
     int cellRow;
     int cellColumn;
-
+    boolean editPencilMarks;
     boolean isSolutionHint;
 
     public CellController(){}
@@ -31,7 +31,6 @@ public class CellController {
         }else{
             isSolutionHint = true;
             }
-
         cellView = new CellView(cell, this);
 
     }
@@ -40,12 +39,38 @@ public class CellController {
         cellView.setBorder(boarder);
     }
     public int getCellValue(){return this.cellValue;}
-
+    public boolean isEditPencilMarks() {return editPencilMarks;}
+    public void enableEditPencilMarks(){
+        editPencilMarks = true;
+    }
+    public void disableEditPencilMarks(){
+        editPencilMarks = false;
+    }
     public CellView getCellView() {return cellView;}
     public Cell getCellModel() {return cellModel;}
+    public int getCellRow() {return cellRow;}
+    public int getCellColumn() {return cellColumn;}
+    public int[] getBox(int row, int column){
+        if (row < 3) {
+            row = 0;
+        } else if (row < 6) {
+            row = 3;
+        } else {
+            row = 6;
+        }
 
+        if (column < 3) {
+            column = 0;
+        } else if (column < 6) {
+            column = 3;
+        } else {
+            column = 6;
+        }
+
+        return new int[]{row, column};
+    }
     public boolean isSolutionHint() {return isSolutionHint;}
-
+    public void updatePencilMarks(int possible){cellView.updatePencilMarks(possible);}
     public void setSelected(boolean b){
         if(b){
             cellView.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -54,6 +79,16 @@ public class CellController {
         }
     }
 
+    public void removePencilMark(int possible){
+        if(!isSolutionHint) {
+            cellView.hidePencilMark(possible);
+        }
+    }
+    public void addPencilMark(int possible){
+        if(!isSolutionHint) {
+            cellView.showPencilMark(possible);
+        }
+    }
     public void updateCellSolution(int solution){
         if(!isSolutionHint ) {
             this.cellValue = solution;
@@ -64,7 +99,6 @@ public class CellController {
                 cellView.updateSolution(cellValue);
                 cellView.getCellPossibilityGridPane().setVisible(false);
             }
-            //updateCellPossibilities();
         }
     }
 
@@ -74,12 +108,5 @@ public class CellController {
             cellView.updatePencilMarks(possible);
         }
     }
-
-    public void enablePencilMarks(){
-        cellView.enableEditPencilMarks();
-    }
-    public void disablePencilMarks(){cellView.disableEditPencilMarks();}
-
-
 
 }

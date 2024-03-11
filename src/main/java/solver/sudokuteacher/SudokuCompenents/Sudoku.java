@@ -112,6 +112,20 @@ public class Sudoku {
         }
         return true;
     }
+    private boolean checkBoxSolution(int x, int y){
+
+        int solution = 0;
+        for (int boxRow = x; boxRow < x+ 3 ; boxRow++) {
+            for (int boxColumn = y; boxColumn < y + 3; boxColumn++) {
+                if (sudoku[boxRow][boxColumn].getSolution() == 0){
+                    return false;
+                }else{
+                    solution += sudoku[boxRow][boxColumn].getSolution();
+                }
+            }
+        }
+        return solution == 45;
+    }
 
     public Cell getCell(int row, int column){
         return sudoku[row][column];
@@ -129,21 +143,19 @@ public class Sudoku {
 
         return false;
     }
+    public boolean isSolved(){
 
-    private boolean checkBoxSolution(int x, int y){
-
-        int solution = 0;
-        for (int i = x; i < x+ 3 ; i++) {
-            for (int j = x; j < x + 3; j++) {
-                if (sudoku[i][j].getSolution() == 0){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (getCell(i,j).getSolution() == 0){
                     return false;
-                }else{
-                    solution += sudoku[i][j].getSolution();
                 }
             }
         }
-        return solution == 45;
+
+        return true;
     }
+
 
     public int[] getBox(int row, int column){
         if (row < 3) {
@@ -267,7 +279,7 @@ public class Sudoku {
         for (int i = 1; i < 10; i++) {
             cellPossibles[i - 1] = i;
         }
-        ArrayList<Cell> cellsSeenByCell = allCellsSeenHelper(cell);
+        ArrayList<Cell> cellsSeenByCell = getAllCellsSeen(cell);
 
         for (Cell cellSeen: cellsSeenByCell) {
             int cellSolution = cellSeen.getSolution();
@@ -286,8 +298,8 @@ public class Sudoku {
         }
     }
 
-    private boolean isPossibleValidInCell(Cell cell, int possible){
-        ArrayList<Cell> cellsSeenByCell = allCellsSeenHelper(cell);
+    public boolean isPossibleValidInCell(Cell cell, int possible){
+        ArrayList<Cell> cellsSeenByCell = getAllCellsSeen(cell);
         for (Cell cellSeen: cellsSeenByCell) {
             if(cellSeen.getSolution() == possible){
                 return false;
@@ -511,7 +523,7 @@ public class Sudoku {
         return cellsSeen;
     }
 
-    public ArrayList<Cell> allCellsSeenHelper(Cell cell){
+    public ArrayList<Cell> getAllCellsSeen(Cell cell){
 
         ArrayList<Cell> cellsSeen = new ArrayList<>();
 

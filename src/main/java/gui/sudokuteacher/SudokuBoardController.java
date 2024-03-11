@@ -1,12 +1,14 @@
 package gui.sudokuteacher;
 
-import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
+import java.util.ArrayList;
 
+
+//TODO: add logic for handling when a user input an incorrect solution (Number has already been added in unit) || solution produces invalid cell (no possible)
 public class SudokuBoardController {
     Sudoku sudokuModel;
     SudokuBoardView sudokuBoardView;
@@ -24,7 +26,6 @@ public class SudokuBoardController {
         sudokuBoardView = new SudokuBoardView(sudokuModel);
         cellsInBoardView = sudokuBoardView.getCellsInBoard();
         editPossibles = false;
-
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
         sudokuBoardView.setOnKeyPressed(this::keyPressed);
     }
@@ -75,54 +76,57 @@ public class SudokuBoardController {
             case UP -> moveCell(0, -1);
             case DOWN -> moveCell(0, 1);
             case P -> {
-                /*FIXME: even when P is pressed and you should be able to edit possibles, pressing a number
-                    inputs a solution instead of removing/adding a possible*/
-
-            /*        for (CellController[] cellUnit: cellsInBoardView) {
-                        for (CellController cell: cellUnit) {
-                            if(editPossibles){
-                                cell.disablePencilMarks();
-                            }else{
-                                cell.enablePencilMarks();
-                            }
-                        }
-                    }
+                editPossibles = !editPossibles;
                 for (int row = 0; row < 9; row++) {
                     for (int column = 0; column < 9; column++) {
                         if(!cellsInBoardView[row][column].isSolutionHint) {
                             if (editPossibles) {
-                                cellsInBoardView[row][column].disablePencilMarks();
+                                cellsInBoardView[row][column].enableEditPencilMarks();
                             } else {
-                                cellsInBoardView[row][column].enablePencilMarks();
+                                cellsInBoardView[row][column].disableEditPencilMarks();
                             }
                         }
                     }
-                }*/
+                }
             }
             default -> {}
         }
 
 
         if(digit > -1) {
-            if (!currentCell.isSolutionHint ) {
+            if (!currentCell.isSolutionHint && !currentCell.isEditPencilMarks()) {
+
                 int currentCellValue = currentCell.getCellValue();
+                ArrayList<CellController> cellsSeen = getAllCellsSeen(currentCell);
+
                 if (currentCellValue == 0 && digit > 0) {
                     sudokuModel.updateCellSolution(currentCell.getCellModel(), digit);
+                    removePossibleFromAffectedCells(cellsSeen, digit);
                 }else if(currentCellValue > 0 && digit != 0){
                     sudokuModel.removeSolutionFromCell(currentCell.getCellModel());
+                    addPossibleToAffectedCells(cellsSeen, currentCellValue);
                     sudokuModel.updateCellSolution(currentCell.getCellModel(), digit);
+                    removePossibleFromAffectedCells(cellsSeen, digit);
                 }else if(currentCellValue > 0){
                     sudokuModel.removeSolutionFromCell(currentCell.getCellModel());
+                    addPossibleToAffectedCells(cellsSeen, currentCellValue);
                 }
-                updateBoardCells();
+                numberAdded = true;
+            }else if(!currentCell.isSolutionHint){
+                currentCell.updatePencilMarks(digit);
             }
         }
-       /* if(numberAdded){
-            if(checkIsBoardSolved()){
+        if(numberAdded){
+            if(sudokuModel.isSolved()){
                 //TODO: end game logic
+                if(sudokuModel.checkSolution()){
+                    System.out.println("Sudoku is solved!");
+                }else{
+                    System.out.println("Sudoku has an error");
+                }
             }
 
-        }*/
+        }
     }
 
     private void moveCell(int dx, int dy) {
@@ -141,6 +145,20 @@ public class SudokuBoardController {
         }
     }
 
+    private void removePossibleFromAffectedCells(ArrayList<CellController> cells, int possible){
+        for (CellController cell: cells) {
+            cell.removePencilMark(possible);
+        }
+    }
+
+    private void addPossibleToAffectedCells(ArrayList<CellController> cells, int possible){
+        for (CellController cell: cells) {
+            if(sudokuModel.isPossibleValidInCell(cell.getCellModel(), possible)){
+                cell.addPencilMark(possible);
+            }
+        }
+    }
+
     private void updateBoardCells(){
 
         for (int row = 0; row < 9; row++) {
@@ -148,5 +166,38 @@ public class SudokuBoardController {
                 cellsInBoardView[row][column].updateCellPossibilities();
             }
         }
+    }
+
+    public ArrayList<CellController> getAllCellsSeen(CellController cell){
+
+        ArrayList<CellController> cellsSeen = new ArrayList<>();
+
+        int row = cell.getCellRow();
+        int column = cell.getCellColumn();
+        int[] box = cell.getBox(row, column);
+
+        //box
+        for (int boxRow = box[0]; boxRow < 3 + box[0]; boxRow++) {
+            for (int boxColumn = box[1]; boxColumn < 3 + box[1]; boxColumn++) {
+                if(cellsInBoardView[boxRow][boxColumn] != cell && !cellsSeen.contains(cellsInBoardView[boxRow][boxColumn])){
+                    cellsSeen.add(cellsInBoardView[boxRow][boxColumn]);
+                }
+            }
+        }
+        //row
+        for (int i = 0; i < 9; i++) {
+            if(!cellsSeen.contains(cellsInBoardView[row][i]) && cellsInBoardView[row][i] != cell){
+                cellsSeen.add(cellsInBoardView[row][i]);
+            }
+        }
+
+        //column
+        for (int i = 0; i < 9; i++) {
+            if(!cellsSeen.contains(cellsInBoardView[i][column]) && cellsInBoardView[i][column] != cell){
+                cellsSeen.add(cellsInBoardView[i][column]);
+            }
+        }
+
+        return cellsSeen;
     }
 }

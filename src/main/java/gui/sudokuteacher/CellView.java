@@ -16,10 +16,10 @@ public class CellView extends StackPane  {
     private GridPane cellPossibilityGridPane;
     private Text solution;
     private boolean isSolutionHint;
-    private boolean editPencilMarks;
     private CellController cellController;
 
 
+    //TODO: have font/color and other cosmetic options to the controller
     public CellView(Cell cell, CellController cellController) {
         super();
         this.cellController = cellController;
@@ -47,14 +47,6 @@ public class CellView extends StackPane  {
         return cellPossibilityGridPane;
     }
 
-    public boolean isEditPencilMarks() {return editPencilMarks;}
-    public void enableEditPencilMarks(){
-        editPencilMarks = true;
-    }
-    public void disableEditPencilMarks(){
-        editPencilMarks = false;
-    }
-
     public void updateSolution(int solution){
         if(solution > 0){
             this.solution.setText(Integer.toString(solution));
@@ -73,9 +65,25 @@ public class CellView extends StackPane  {
 
     public void updatePencilMarks(int possible){
         if(!isSolutionHint) {
-            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+            if(cellPossibilityGridPane.getChildren().get(possible -1).isVisible()){
+                cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
+            }else{
+                cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+            }
+
         }
     }
+
+    public void hidePencilMark(int possible){
+        if(!isSolutionHint) {
+            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
+        }
+        }
+    public void showPencilMark(int possible){
+        if(!isSolutionHint) {
+            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+        }
+        }
 
     private void createPencilMarks(Cell cell) {
         cellPossibilityGridPane = new GridPane();
