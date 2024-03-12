@@ -4,6 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 import java.util.ArrayList;
 
@@ -57,6 +59,9 @@ public class SudokuBoardController {
     }
 
     public void keyPressed(KeyEvent e){
+        if(currentCell == null){
+            return;
+        }
         boolean numberAdded = false;
         int digit = -1;
         KeyCode keyPressed = e.getCode();
@@ -75,6 +80,16 @@ public class SudokuBoardController {
             case RIGHT -> moveCell(1, 0);
             case UP -> moveCell(0, -1);
             case DOWN -> moveCell(0, 1);
+            case H ->{
+                ArrayList<StrategyModel> nextStrategies = sudokuModel.getNextStrategy();
+                System.out.println( nextStrategies.get(0).toString());
+                if(nextStrategies.get(0).isStrategyFindsSolution()){
+                    int cellRow =nextStrategies.get(0).getCellWithSolution().getRow();
+                    int cellColumn = nextStrategies.get(0).getCellWithSolution().getColumn();
+                    int solution = nextStrategies.get(0).getCellSolution();
+                    cellsInBoardView[cellRow][cellColumn].highlightPossible(solution, Color.GREEN);
+                }
+            }
             case P -> {
                 editPossibles = !editPossibles;
                 for (int row = 0; row < 9; row++) {
@@ -109,6 +124,7 @@ public class SudokuBoardController {
                     removePossibleFromAffectedCells(cellsSeen, digit);
                 }else if(currentCellValue > 0){
                     sudokuModel.removeSolutionFromCell(currentCell.getCellModel());
+                    currentCell.addPencilMark(currentCellValue);
                     addPossibleToAffectedCells(cellsSeen, currentCellValue);
                 }
                 numberAdded = true;

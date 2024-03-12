@@ -20,10 +20,9 @@ public class CellView extends StackPane  {
 
 
     //TODO: have font/color and other cosmetic options to the controller
-    public CellView(Cell cell, CellController cellController) {
+    public CellView(int solution, CellController cellController) {
         super();
         this.cellController = cellController;
-        int solution = cell.getSolution();
         if(solution > 0){
             isSolutionHint = true;
             this.solution = new Text(Integer.toString(solution));
@@ -31,7 +30,7 @@ public class CellView extends StackPane  {
         }else{
             this.solution = new Text("");
             this.solution.setFill(Color.DARKBLUE);
-            createPencilMarks(cell);
+            createPencilMarks();
             super.getChildren().addAll(this.solution, cellPossibilityGridPane);
         }
 
@@ -53,39 +52,52 @@ public class CellView extends StackPane  {
         }else{
             this.solution.setText("");
         }
+
     }
 
     public void clearPencilMarks(){
         if(!isSolutionHint) {
             for (Node possible : cellPossibilityGridPane.getChildren()) {
-                possible.setVisible(false);
+                ((CellPossibilityView) possible).hidePencilMark();
             }
         }
     }
 
     public void updatePencilMarks(int possible){
         if(!isSolutionHint) {
-            if(cellPossibilityGridPane.getChildren().get(possible -1).isVisible()){
-                cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
+            CellPossibilityView currentPossible = ((CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1));
+            if(currentPossible.isShown()){
+                currentPossible.hidePencilMark();
             }else{
-                cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+                currentPossible.showPencilMark();
             }
 
         }
     }
 
+    public void highlightPossible(int possible, Color color){
+        CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+        currentPossible.highlightPossible(color);
+    }
+    public void unhighlightPossible(int possible){
+        CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+        currentPossible.undoHighlight();
+    }
+
     public void hidePencilMark(int possible){
         if(!isSolutionHint) {
-            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(false);
+            CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+            currentPossible.hidePencilMark();
         }
         }
     public void showPencilMark(int possible){
         if(!isSolutionHint) {
-            cellPossibilityGridPane.getChildren().get(possible - 1).setVisible(true);
+         CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+         currentPossible.showPencilMark();
         }
         }
 
-    private void createPencilMarks(Cell cell) {
+    private void createPencilMarks() {
         cellPossibilityGridPane = new GridPane();
         for (int i = 0; i < 3; i++) {
             cellPossibilityGridPane.getColumnConstraints().add(new ColumnConstraints(15));
@@ -95,15 +107,11 @@ public class CellView extends StackPane  {
         int possible = 1;
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
-                Text text = new Text(Integer.toString(possible));
-                text.setVisible(false);
-                cellPossibilityGridPane.add(text, column, row);
-                GridPane.setHalignment(text, HPos.CENTER);
+                CellPossibilityView cellPossible = new CellPossibilityView(possible);
+                cellPossibilityGridPane.add(cellPossible, column, row);
+                GridPane.setHalignment(cellPossible, HPos.CENTER);
                 possible++;
             }
-        }
-        for (Integer cellPossible: cell.getPossibilities()) {
-            cellPossibilityGridPane.getChildren().get(cellPossible - 1).setVisible(true);
         }
 
         cellPossibilityGridPane.alignmentProperty().set(Pos.CENTER);

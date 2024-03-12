@@ -34,6 +34,7 @@ public class NakedSingle extends SolvingStrategy{
     }
 
     public boolean findValidExecutions(){
+        strategyModels.clear();
         executeStrategy = false;
         boolean strategyFound = executeStrategy();
         executeStrategy = true;

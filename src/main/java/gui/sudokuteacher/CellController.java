@@ -31,8 +31,8 @@ public class CellController {
         }else{
             isSolutionHint = true;
             }
-        cellView = new CellView(cell, this);
-
+        cellView = new CellView(cell.getSolution(), this);
+        updateCellPossibilities();
     }
 
     public void setCellBoarder(Border boarder){
@@ -79,6 +79,13 @@ public class CellController {
         }
     }
 
+    public void highlightPossible(int possible, Color color){
+        cellView.highlightPossible(possible, color);
+    }
+    public void unhighlightPossible(int possible){
+        cellView.unhighlightPossible(possible);
+    }
+
     public void removePencilMark(int possible){
         if(!isSolutionHint) {
             cellView.hidePencilMark(possible);
@@ -94,18 +101,19 @@ public class CellController {
             this.cellValue = solution;
             if (cellValue == 0) {
                 cellView.updateSolution(0);
-                cellView.getCellPossibilityGridPane().setVisible(true);
+              // cellView.getCellPossibilityGridPane().setVisible(true);
             }else{
                 cellView.updateSolution(cellValue);
-                cellView.getCellPossibilityGridPane().setVisible(false);
+               cellView.clearPencilMarks();
             }
+            //updateCellPossibilities();
         }
     }
 
     public void updateCellPossibilities(){
         cellView.clearPencilMarks();
         for (Integer possible : cellModel.getPossibilities()) {
-            cellView.updatePencilMarks(possible);
+            cellView.showPencilMark(possible);
         }
     }
 
