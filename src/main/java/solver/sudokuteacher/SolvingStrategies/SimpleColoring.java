@@ -30,6 +30,11 @@ public class SimpleColoring extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
     private boolean simpleColoringHelper(ArrayList<LinkedList<Cell>> cellsWithStrongLink, int possible){
         boolean flag = false;
         ArrayList<Cell> cellsWithOneLink = new ArrayList<>();

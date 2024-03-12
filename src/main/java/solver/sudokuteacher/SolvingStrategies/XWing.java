@@ -31,6 +31,10 @@ public class XWing extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
 
     private boolean xWingRowStrategy (int possible){
         boolean flag = false;

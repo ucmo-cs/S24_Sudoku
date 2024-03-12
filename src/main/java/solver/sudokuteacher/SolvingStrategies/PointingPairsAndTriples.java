@@ -1,6 +1,5 @@
 package solver.sudokuteacher.SolvingStrategies;
 
-import solver.sudokuteacher.SudokuCompenents.Cell;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
 import java.util.ArrayList;
@@ -29,6 +28,12 @@ public class PointingPairsAndTriples extends SolvingStrategy{
 
         return flag;
     }
+
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
 
     private boolean pointingPairsRow(int row, int column){
         boolean flag = false;

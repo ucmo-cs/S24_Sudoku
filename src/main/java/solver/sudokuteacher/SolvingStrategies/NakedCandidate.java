@@ -8,13 +8,10 @@ import java.util.Objects;
 public class NakedCandidate extends SolvingStrategy{
     int candidateNumber;
 
-    public NakedCandidate(Sudoku sudoku) {
-       super(sudoku);
-    }
+    public NakedCandidate(Sudoku sudoku, int candidateNumber) {
+        super(sudoku);
+       this.candidateNumber = candidateNumber;
 
-    public boolean executeStrategy(int candidateNumber){
-        this.candidateNumber = candidateNumber;
-        return executeStrategy();
     }
 
     @Override
@@ -39,6 +36,14 @@ public class NakedCandidate extends SolvingStrategy{
         }
         return flag;
     }
+    @Override
+    public boolean findValidExecutions() {
+        executeStrategy = false;
+        boolean strategyFound = executeStrategy();
+        executeStrategy = true;
+        return strategyFound;
+    }
+
 
     private boolean nakedCandidateRowHelper(int row, int candidateNumber){
         boolean flag = false;

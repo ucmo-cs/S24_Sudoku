@@ -33,6 +33,11 @@ public class XChain extends SolvingStrategy{
 
         return flag;
     }
+
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
     private LinkedList<ArrayList<Cell>>  xChainBuilder (Cell startCell, ArrayList<LinkedList<Cell>>  cellsWithStrongLink){
         LinkedList<ArrayList<Cell>> xChain = new LinkedList<>();
         ArrayList<Cell> chainStart = new ArrayList<>();

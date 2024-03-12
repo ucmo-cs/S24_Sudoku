@@ -58,6 +58,11 @@ public class XYChain extends SolvingStrategy{
         return flag;
     }
 
+    @Override
+    public boolean findValidExecutions() {
+        return false;
+    }
+
     private ArrayList<XYChainNode> createXYNodes(ArrayList<Cell> xyChainCandidates){
         ArrayList<XYChainNode> xyChainNodes = new ArrayList<>();
         for (Cell biValueCell: xyChainCandidates) {
