@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
 
         sudokuController = sudoku;
         BorderPane root = new BorderPane();
-        root.setCenter(ButtonView.createNumberPad());
+        root.setCenter(ButtonView.createNumberPad(sudokuController));
         root.setBottom(ButtonView.createButtonBar());
         root.setPadding(new Insets(10)); // Adjust padding as needed
         root.setMargin(sudoku.getSudokuBoardView(), new Insets(10)); // Adjust margins as needed

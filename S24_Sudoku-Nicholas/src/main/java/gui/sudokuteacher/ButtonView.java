@@ -1,19 +1,11 @@
 package gui.sudokuteacher;
 
 import javafx.geometry.Insets;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.scene.input.KeyCode;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 
 public class ButtonView extends GridPane{
@@ -47,7 +39,8 @@ public class ButtonView extends GridPane{
         return hbox;
     }
 
-    public static GridPane createNumberPad () {
+
+    public static GridPane createNumberPad (SudokuBoardController sudokuController) {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);
@@ -63,13 +56,32 @@ public class ButtonView extends GridPane{
                 button.setFocusTraversable(false);
                 int finalNum = num-1;
                 button.setOnAction(e -> {
-                    System.out.println(finalNum +" button pressed");
+                    // Map the button click to corresponding digit key
+                    KeyCode keyCode = mapButtonToKeyCode(finalNum);
+                    // Call the keyPressed method of the provided SudokuBoardController instance
+                    sudokuController.keyPressed(keyCode);
                 });
                 gridPane.add(button, col, row);
             }
         }
 
         return gridPane;
+    }
+
+    // Helper method to map button numbers to corresponding digit key codes
+    private static KeyCode mapButtonToKeyCode(int buttonNumber) {
+        switch (buttonNumber) {
+            case 1: return KeyCode.DIGIT1;
+            case 2: return KeyCode.DIGIT2;
+            case 3: return KeyCode.DIGIT3;
+            case 4: return KeyCode.DIGIT4;
+            case 5: return KeyCode.DIGIT5;
+            case 6: return KeyCode.DIGIT6;
+            case 7: return KeyCode.DIGIT7;
+            case 8: return KeyCode.DIGIT8;
+            case 9: return KeyCode.DIGIT9;
+            default: return null; // Return null for non-digit buttons (e.g., clear button)
+        }
     }
 
     private void handleNumberPadButtonClick(String value) {

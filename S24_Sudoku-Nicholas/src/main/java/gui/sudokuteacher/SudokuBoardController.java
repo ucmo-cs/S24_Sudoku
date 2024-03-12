@@ -93,6 +93,7 @@ public class SudokuBoardController {
         }
 
 
+
         if(digit > -1) {
             if (!currentCell.isSolutionHint && !currentCell.isEditPencilMarks()) {
 
@@ -128,6 +129,7 @@ public class SudokuBoardController {
 
         }
     }
+
 
     private void moveCell(int dx, int dy) {
         int currentRow = currentCell.cellRow;
