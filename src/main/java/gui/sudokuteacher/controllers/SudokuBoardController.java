@@ -5,7 +5,7 @@ import gui.sudokuteacher.views.SudokuBoardView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
+import src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class SudokuBoardController {
         editPossibles = false;
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
         sudokuBoardView.setMaxSize(405,405);
-    }
+
 
     public SudokuBoardView getSudokuBoardView() {
         return sudokuBoardView;
