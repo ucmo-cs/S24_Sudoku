@@ -21,7 +21,7 @@ public class NakedSingleModel extends StrategyModel {
 
     @Override
     public void draw(CellController[][] sudokuCells){
-        sudokuCells[row][column].highlightPossible(solution, Color.YELLOW);
+        sudokuCells[row][column].highlightPossible(solution, Color.LIGHTGREEN);
     }
 
     @Override

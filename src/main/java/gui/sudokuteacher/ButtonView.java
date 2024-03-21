@@ -1,5 +1,6 @@
 package gui.sudokuteacher;
 
+import gui.sudokuteacher.controllers.SudokuBoardController;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Pos;
