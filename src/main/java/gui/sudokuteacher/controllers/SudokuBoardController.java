@@ -5,7 +5,8 @@ import gui.sudokuteacher.views.SudokuBoardView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
+//import /main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
+import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class SudokuBoardController {
 
     public SudokuBoardController(String sudokuString) {
 
-        if(sudokuString.length() != 81){
+        if (sudokuString.length() != 81) {
             System.out.println("There needs to be 81 characters to make a sudoku");
             return;
         }
@@ -29,9 +30,9 @@ public class SudokuBoardController {
         cellsInBoardView = sudokuBoardView.getCellsInBoard();
         editPossibles = false;
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
-        sudokuBoardView.setMaxSize(405,405);
+        sudokuBoardView.setMaxSize(405, 405);
 
-
+    }
     public SudokuBoardView getSudokuBoardView() {
         return sudokuBoardView;
     }
@@ -61,6 +62,7 @@ public class SudokuBoardController {
     public void keyPressed(KeyCode keyPressed){
         boolean numberAdded = false;
         int digit = -1;
+
         switch (keyPressed){
             case DIGIT1, NUMPAD1 -> { digit = 1;}
             case DIGIT2, NUMPAD2 -> { digit = 2;}
