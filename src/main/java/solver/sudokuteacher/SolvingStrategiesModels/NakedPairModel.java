@@ -35,10 +35,10 @@ public class NakedPairModel extends StrategyModel{
     }
     @Override
     public void draw(CellController[][] sudokuCells){
-        sudokuCells[cell1.getRow()][cell1.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(0), Color.GREEN);
-        sudokuCells[cell1.getRow()][cell1.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(1), Color.GREEN);
-        sudokuCells[cell2.getRow()][cell2.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(0), Color.GREEN);
-        sudokuCells[cell2.getRow()][cell2.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(1), Color.GREEN);
+        sudokuCells[cell1.getRow()][cell1.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(0), Color.LIGHTGREEN);
+        sudokuCells[cell1.getRow()][cell1.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(1), Color.LIGHTGREEN);
+        sudokuCells[cell2.getRow()][cell2.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(0), Color.LIGHTGREEN);
+        sudokuCells[cell2.getRow()][cell2.getColumn()].highlightPossible(possiblesThatMakeUpStrategy.get(1), Color.LIGHTGREEN);
 
         for (Cell cell: affectedCells) {
             if (cell.getPossibilities().contains(possiblesThatMakeUpStrategy.get(0))){

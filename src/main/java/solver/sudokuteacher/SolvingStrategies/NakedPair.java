@@ -44,8 +44,8 @@ public class NakedPair extends SolvingStrategy{
             if(sudokuBoard[row][column].getPossibilities().size() == 2){
                 candidateCells.add(sudokuBoard[row][column]);
             }
-
         }
+
         if(candidateCells.size() < 2){
             return false;
         }

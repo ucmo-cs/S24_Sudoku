@@ -92,6 +92,9 @@ public class SudokuBoardController {
             }
             case H -> {
                 ArrayList<StrategyModel> nextStrategies = sudokuModel.getNextStrategy();
+                if(nextStrategies == null){
+                    return;
+                }
                 System.out.println(nextStrategies.get(0).toString());
                 nextStrategies.get(0).draw(cellsInBoardView);
             }
