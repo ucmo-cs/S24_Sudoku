@@ -35,6 +35,8 @@ public class CellView extends StackPane  {
         }
 
         this.solution.setFont(Font.font("Comic Sans MS", FontWeight.BLACK, 35));
+        this.setMaxSize(45,45);
+        this.setMinSize(45,45);
     }
 
     public Text getSolution(){return this.solution;}

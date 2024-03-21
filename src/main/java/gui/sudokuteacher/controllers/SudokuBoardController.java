@@ -5,10 +5,7 @@ import gui.sudokuteacher.views.SudokuBoardView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-<<<<<<< HEAD:src/main/java/gui/sudokuteacher/SudokuBoardController.java
-=======
-import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
->>>>>>> Nicholas:src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
+import src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 import java.util.ArrayList;
 
@@ -32,12 +29,8 @@ public class SudokuBoardController {
         cellsInBoardView = sudokuBoardView.getCellsInBoard();
         editPossibles = false;
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
-<<<<<<< HEAD:src/main/java/gui/sudokuteacher/SudokuBoardController.java
-        //sudokuBoardView.setOnKeyPressed(this::keyPressed);
-=======
-        sudokuBoardView.setMaxSize(100,100);
->>>>>>> Nicholas:src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
-    }
+        sudokuBoardView.setMaxSize(405,405);
+
 
     public SudokuBoardView getSudokuBoardView() {
         return sudokuBoardView;
@@ -68,10 +61,6 @@ public class SudokuBoardController {
     public void keyPressed(KeyCode keyPressed){
         boolean numberAdded = false;
         int digit = -1;
-<<<<<<< HEAD:src/main/java/gui/sudokuteacher/SudokuBoardController.java
-        //KeyCode keyPressed = e.getCode();
-=======
->>>>>>> Nicholas:src/main/java/gui/sudokuteacher/controllers/SudokuBoardController.java
         switch (keyPressed){
             case DIGIT1, NUMPAD1 -> { digit = 1;}
             case DIGIT2, NUMPAD2 -> { digit = 2;}
