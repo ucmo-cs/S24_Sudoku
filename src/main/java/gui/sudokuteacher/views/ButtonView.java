@@ -1,12 +1,14 @@
 package gui.sudokuteacher.views;
 
 import gui.sudokuteacher.controllers.SudokuBoardController;
+import gui.sudokuteacher.scenes.HelloApplication;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 
 public class ButtonView extends GridPane{
@@ -31,7 +33,13 @@ public class ButtonView extends GridPane{
         menuBtn.setMinSize(100,20);
         menuBtn.setFocusTraversable(false);
         menuBtn.setOnAction(e -> {
-            // Handle returning to menu
+            HelloApplication helloApplication = new HelloApplication();
+            try {
+                helloApplication.start(new Stage());
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             System.out.println("Return to menu button pressed");
         });
 
