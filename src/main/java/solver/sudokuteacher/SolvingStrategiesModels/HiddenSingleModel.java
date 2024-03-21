@@ -22,7 +22,7 @@ public class HiddenSingleModel extends StrategyModel {
         CellController cellController = sudokuCells[cell.getRow()][cell.getColumn()];
         for (Integer possible: cellController.getCellModel().getPossibilities()) {
             if(possible == solution){
-                cellController.highlightPossible(solution, Color.GREEN);
+                cellController.highlightPossible(solution, Color.LIGHTGREEN);
             }else{
                 cellController.highlightPossible(possible, Color.YELLOW);
             }

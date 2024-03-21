@@ -165,8 +165,8 @@ public class Sudoku {
         NakedSingle ns = new NakedSingle(this);
         HiddenSingle hs = new HiddenSingle(this);
         NakedPair np = new NakedPair(this);
-       // NakedCandidate np = new NakedCandidate(this, 2);
-        NakedCandidate nc2 = new NakedCandidate(this, 3);
+        //NakedCandidate nc2 = new NakedCandidate(this, 3);
+        NakedTriple nc2 = new NakedTriple(this);
         NakedCandidate nc3 = new NakedCandidate(this, 4);
         HiddenCandidate hc1 = new HiddenCandidate(this,2);
         HiddenCandidate hc2 = new HiddenCandidate(this,3);
@@ -187,9 +187,9 @@ public class Sudoku {
 
         strategies.add(ns);
         strategies.add(hs);
-        strategies.add(np);/*
+        strategies.add(np);
         strategies.add(nc2);
-        strategies.add(nc3);
+/*        strategies.add(nc3);
         strategies.add(hc1);
         strategies.add(hc2);
         strategies.add(hc3);

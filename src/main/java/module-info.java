@@ -11,6 +11,6 @@ module solver.sudokuteacher {
     opens gui.sudokuteacher.controllers to javafx.fxml;
     exports gui.sudokuteacher.views;
     opens gui.sudokuteacher.views to javafx.fxml;
-    exports gui.sudokuteacher.scences;
-    opens gui.sudokuteacher.scences to javafx.fxml;
+    exports gui.sudokuteacher.scenes;
+    opens gui.sudokuteacher.scenes to javafx.fxml;
 }
