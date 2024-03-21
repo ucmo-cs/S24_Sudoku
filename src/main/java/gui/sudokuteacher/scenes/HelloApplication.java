@@ -1,4 +1,4 @@
-package gui.sudokuteacher.scences;
+package gui.sudokuteacher.scenes;
 
 import gui.sudokuteacher.controllers.SudokuBoardController;
 import gui.sudokuteacher.views.ButtonView;
