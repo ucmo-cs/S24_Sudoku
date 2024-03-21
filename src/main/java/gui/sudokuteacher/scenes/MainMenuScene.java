@@ -25,7 +25,7 @@ public class MainMenuScene {
         newGameButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px;");
         newGameButton.setOnAction(e -> {
             // Once "Start a New Game" is pressed, switch to the Sudoku game scene
-            HelloApplication.startSudokuGame(primaryStage);
+            PlaySudokuScene.startSudokuGame(primaryStage);
         });
 
         // Create VBox layout for menu

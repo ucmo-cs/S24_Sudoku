@@ -1,7 +1,7 @@
 package gui.sudokuteacher.views;
 
 import gui.sudokuteacher.controllers.SudokuBoardController;
-import gui.sudokuteacher.scenes.HelloApplication;
+import gui.sudokuteacher.scenes.PlaySudokuScene;
 import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Pos;
@@ -33,7 +33,7 @@ public class ButtonView extends GridPane{
         menuBtn.setMinSize(100,20);
         menuBtn.setFocusTraversable(false);
         menuBtn.setOnAction(e -> {
-            HelloApplication helloApplication = new HelloApplication();
+            PlaySudokuScene helloApplication = new PlaySudokuScene();
             try {
                 helloApplication.start(new Stage());
 
