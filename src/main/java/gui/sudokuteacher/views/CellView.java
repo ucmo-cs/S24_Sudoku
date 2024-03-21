@@ -1,5 +1,6 @@
-package gui.sudokuteacher;
+package gui.sudokuteacher.views;
 
+import gui.sudokuteacher.controllers.CellController;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 
@@ -9,7 +10,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import solver.sudokuteacher.SudokuCompenents.Cell;
 
 public class CellView extends StackPane  {
 
@@ -63,16 +63,19 @@ public class CellView extends StackPane  {
         }
     }
 
-    public void updatePencilMarks(int possible){
+    public String updatePencilMarks(int possible){
         if(!isSolutionHint) {
             CellPossibilityView currentPossible = ((CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1));
             if(currentPossible.isShown()){
                 currentPossible.hidePencilMark();
+                return "remove";
             }else{
                 currentPossible.showPencilMark();
+                return "add";
             }
 
         }
+        return "";
     }
 
     public void highlightPossible(int possible, Color color){

@@ -149,8 +149,10 @@ public class NakedPair extends SolvingStrategy{
 
             if(!executeStrategy){
                 nakedPair = new NakedPairModel("NakedPair");
-                nakedPair.getStrategyCells().add(cell1);
-                nakedPair.getStrategyCells().add(cell2);
+                nakedPair.setCell1(cell1);
+                nakedPair.setCell2(cell2);
+                nakedPair.getPossiblesThatMakeUpStrategy().add(possible1);
+                nakedPair.getPossiblesThatMakeUpStrategy().add(possible2);
             }
 
             if(areCellsInSameBox){
@@ -236,6 +238,7 @@ public class NakedPair extends SolvingStrategy{
 
     @Override
     public boolean findValidExecutions() {
+        strategyModels.clear();
         executeStrategy = false;
         boolean strategyFound = executeStrategy();
         executeStrategy = true;
