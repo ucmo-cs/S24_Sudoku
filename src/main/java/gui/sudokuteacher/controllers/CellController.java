@@ -1,5 +1,6 @@
-package gui.sudokuteacher;
+package gui.sudokuteacher.controllers;
 
+import gui.sudokuteacher.views.CellView;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -70,7 +71,15 @@ public class CellController {
         return new int[]{row, column};
     }
     public boolean isSolutionHint() {return isSolutionHint;}
-    public void updatePencilMarks(int possible){cellView.updatePencilMarks(possible);}
+    public void updatePencilMarks(int possible){
+        String result = cellView.updatePencilMarks(possible);
+        if(result.equals("remove")){
+         cellModel.getPossibilities().remove(Integer.valueOf(possible));
+        }else if(result.equals("add")){
+            cellModel.getPossibilities().add(possible);
+        }
+
+    }
     public void setSelected(boolean b){
         if(b){
             cellView.setBackground(new Background(new BackgroundFill(Color.LIGHTSKYBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -89,11 +98,13 @@ public class CellController {
     public void removePencilMark(int possible){
         if(!isSolutionHint) {
             cellView.hidePencilMark(possible);
+            cellModel.getPossibilities().remove(Integer.valueOf(possible));
         }
     }
     public void addPencilMark(int possible){
         if(!isSolutionHint) {
             cellView.showPencilMark(possible);
+            cellModel.getPossibilities().add(possible);
         }
     }
     public void updateCellSolution(int solution){
@@ -101,10 +112,15 @@ public class CellController {
             this.cellValue = solution;
             if (cellValue == 0) {
                 cellView.updateSolution(0);
+/*                cellModel.setSolution(solution);
+                cellModel.getPossibilities().clear();*/
               // cellView.getCellPossibilityGridPane().setVisible(true);
             }else{
                 cellView.updateSolution(cellValue);
-               cellView.clearPencilMarks();
+                cellView.clearPencilMarks();
+
+/*                cellModel.setSolution(solution);
+                cellModel.getPossibilities().clear();*/
             }
             //updateCellPossibilities();
         }

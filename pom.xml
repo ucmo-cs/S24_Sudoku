@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>solver.sudokuteacher/gui.sudokuteacher.HelloApplication</mainClass>
+                            <mainClass>solver.sudokuteacher/gui.sudokuteacher.scences.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

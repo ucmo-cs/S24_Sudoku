@@ -1,5 +1,5 @@
 package solver.sudokuteacher.SudokuCompenents;
-import gui.sudokuteacher.CellController;
+import gui.sudokuteacher.controllers.CellController;
 
 import java.util.ArrayList;
 

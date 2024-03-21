@@ -16,23 +16,6 @@ public class Sudoku {
     private final Cell[][] sudoku = new Cell[9][9];
     private boolean invalidCell = false;
     ArrayList<SolvingStrategy> strategies;
-/*    NakedSingle ns;
-    HiddenSingle hs;
-    NakedCandidate nc;
-    HiddenCandidate hc;
-    PointingPairsAndTriples pp;
-    BoxLineReduction blr;
-    XWing xWing;
-    SimpleColoring sc;
-    YWing yWing;
-    EmptyRectangle er;
-    Swordfish sf;
-    XyzWing xyzWing;
-    Bug bug;
-    XChain xChain;
-    XYChain xyChain;
-    AlternatingInferenceChain aic;
-    RecursiveGuess guess;*/
 
     public Sudoku(int[][] sudoku) {
 
@@ -181,7 +164,8 @@ public class Sudoku {
         this.strategies = new ArrayList<>(21);
         NakedSingle ns = new NakedSingle(this);
         HiddenSingle hs = new HiddenSingle(this);
-        NakedCandidate np = new NakedCandidate(this, 2);
+        NakedPair np = new NakedPair(this);
+       // NakedCandidate np = new NakedCandidate(this, 2);
         NakedCandidate nc2 = new NakedCandidate(this, 3);
         NakedCandidate nc3 = new NakedCandidate(this, 4);
         HiddenCandidate hc1 = new HiddenCandidate(this,2);

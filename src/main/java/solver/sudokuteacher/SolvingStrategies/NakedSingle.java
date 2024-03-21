@@ -20,10 +20,8 @@ public class NakedSingle extends SolvingStrategy{
                     if(executeStrategy) {
                         sudoku.updateCellSolution(sudokuBoard[row][column], sudokuBoard[row][column].getPossibilities().get(0));
                     }else{
-                        NakedSingleModel nakedSingle= new NakedSingleModel();
+                        NakedSingleModel nakedSingle= new NakedSingleModel(sudokuBoard[row][column], sudokuBoard[row][column].getPossibilities().get(0));
                         nakedSingle.setStrategyFindsSolution(true);
-                        nakedSingle.setCellWithSolution(sudokuBoard[row][column]);
-                        nakedSingle.setCellSolution(sudokuBoard[row][column].getPossibilities().get(0));
                         strategyModels.add(nakedSingle);
                     }
                     flag = true;

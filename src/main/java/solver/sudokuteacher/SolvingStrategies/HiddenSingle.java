@@ -1,6 +1,7 @@
 package solver.sudokuteacher.SolvingStrategies;
 import solver.sudokuteacher.SolvingStrategiesModels.HiddenSingleModel;
 import solver.sudokuteacher.SolvingStrategiesModels.NakedSingleModel;
+import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
 import solver.sudokuteacher.SudokuCompenents.Cell;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
@@ -36,6 +37,7 @@ public class HiddenSingle extends SolvingStrategy{
 
     @Override
     public boolean findValidExecutions() {
+        strategyModels.clear();
         executeStrategy = false;
         boolean strategyFound = executeStrategy();
         executeStrategy = true;
@@ -63,14 +65,7 @@ public class HiddenSingle extends SolvingStrategy{
                 if(executeStrategy) {
                     sudoku.updateCellSolution(cell, possible);
                 }else{
-                    HiddenSingleModel hiddenSingle = new HiddenSingleModel();
-                    for (int column = 0; column < 9; column++) {
-                        hiddenSingle.getStrategyCells().add(sudokuBoard[row][column]);
-                    }
-                    hiddenSingle.setStrategyFindsSolution(true);
-                    hiddenSingle.setCellWithSolution(cell);
-                    hiddenSingle.setCellSolution(possible);
-                    strategyModels.add(hiddenSingle);
+                    strategyModels.add(new HiddenSingleModel(cell, possible, "row"));
                 }
                 flag = true;
             }
@@ -97,14 +92,7 @@ public class HiddenSingle extends SolvingStrategy{
                 if(executeStrategy) {
                     sudoku.updateCellSolution(cell, possible);
                 }else{
-                    HiddenSingleModel hiddenSingle = new HiddenSingleModel();
-                    for (int row = 0; row < 9; row++) {
-                        hiddenSingle.getStrategyCells().add(sudokuBoard[row][column]);
-                    }
-                    hiddenSingle.setStrategyFindsSolution(true);
-                    hiddenSingle.setCellWithSolution(cell);
-                    hiddenSingle.setCellSolution(possible);
-                    strategyModels.add(hiddenSingle);
+                    strategyModels.add(new HiddenSingleModel(cell, possible, "Column"));
                 }
                 flag = true;
             }
@@ -133,16 +121,7 @@ public class HiddenSingle extends SolvingStrategy{
                 if(executeStrategy) {
                     sudoku.updateCellSolution(cell, possible);
                 }else{
-                    HiddenSingleModel hiddenSingle = new HiddenSingleModel();
-                    for (int boxRow = rowTop; boxRow < rowTop + 3; boxRow++) {
-                        for (int boxColumn = columnTop; boxColumn < columnTop + 3; boxColumn++) {
-                            hiddenSingle.getStrategyCells().add(sudokuBoard[boxRow][boxColumn]);
-                        }
-                    }
-                    hiddenSingle.setStrategyFindsSolution(true);
-                    hiddenSingle.setCellWithSolution(cell);
-                    hiddenSingle.setCellSolution(possible);
-                    strategyModels.add(hiddenSingle);
+                    strategyModels.add(new HiddenSingleModel(cell, possible, "Box"));
                 }
                 flag = true;
             }

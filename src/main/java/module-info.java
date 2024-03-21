@@ -7,4 +7,10 @@ module solver.sudokuteacher {
     exports solver.sudokuteacher;
     exports gui.sudokuteacher;
     opens gui.sudokuteacher to javafx.fxml;
+    exports gui.sudokuteacher.controllers;
+    opens gui.sudokuteacher.controllers to javafx.fxml;
+    exports gui.sudokuteacher.views;
+    opens gui.sudokuteacher.views to javafx.fxml;
+    exports gui.sudokuteacher.scences;
+    opens gui.sudokuteacher.scences to javafx.fxml;
 }

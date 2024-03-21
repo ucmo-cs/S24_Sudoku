@@ -1,9 +1,11 @@
-package gui.sudokuteacher;
+package gui.sudokuteacher.controllers;
 
+import gui.sudokuteacher.views.CellView;
+import gui.sudokuteacher.views.SudokuBoardView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import solver.sudokuteacher.SolvingStrategiesModels.StrategyModel;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class SudokuBoardController {
         cellsInBoardView = sudokuBoardView.getCellsInBoard();
         editPossibles = false;
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
-        //sudokuBoardView.setOnKeyPressed(this::keyPressed);
+        sudokuBoardView.setMaxSize(100,100);
     }
 
     public SudokuBoardView getSudokuBoardView() {
@@ -59,7 +61,6 @@ public class SudokuBoardController {
     public void keyPressed(KeyCode keyPressed){
         boolean numberAdded = false;
         int digit = -1;
-        //KeyCode keyPressed = e.getCode();
         switch (keyPressed){
             case DIGIT1, NUMPAD1 -> { digit = 1;}
             case DIGIT2, NUMPAD2 -> { digit = 2;}
@@ -89,6 +90,11 @@ public class SudokuBoardController {
                     }
                 }
             }
+            case H -> {
+                ArrayList<StrategyModel> nextStrategies = sudokuModel.getNextStrategy();
+                System.out.println(nextStrategies.get(0).toString());
+                nextStrategies.get(0).draw(cellsInBoardView);
+            }
             default -> {}
         }
 
@@ -111,6 +117,7 @@ public class SudokuBoardController {
                 }else if(currentCellValue > 0){
                     sudokuModel.removeSolutionFromCell(currentCell.getCellModel());
                     addPossibleToAffectedCells(cellsSeen, currentCellValue);
+                    currentCell.updateCellPossibilities();
                 }
                 numberAdded = true;
             }else if(!currentCell.isSolutionHint){
@@ -150,6 +157,7 @@ public class SudokuBoardController {
     private void removePossibleFromAffectedCells(ArrayList<CellController> cells, int possible){
         for (CellController cell: cells) {
             cell.removePencilMark(possible);
+            cell.getCellModel().getPossibilities().remove(Integer.valueOf(possible));
         }
     }
 
@@ -157,6 +165,7 @@ public class SudokuBoardController {
         for (CellController cell: cells) {
             if(sudokuModel.isPossibleValidInCell(cell.getCellModel(), possible)){
                 cell.addPencilMark(possible);
+                cell.getCellModel().getPossibilities().add(possible);
             }
         }
     }

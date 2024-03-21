@@ -1,4 +1,4 @@
-package gui.sudokuteacher;
+package gui.sudokuteacher.views;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;

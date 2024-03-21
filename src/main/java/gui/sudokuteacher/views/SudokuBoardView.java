@@ -1,11 +1,10 @@
-package gui.sudokuteacher;
+package gui.sudokuteacher.views;
 
+import gui.sudokuteacher.controllers.CellController;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
-
-import java.util.ArrayList;
 
 public class SudokuBoardView extends GridPane {
 
