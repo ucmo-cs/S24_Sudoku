@@ -32,6 +32,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         Scene mainMenuScene = MainMenuScene.createMainMenu(primaryStage);
 
         primaryStage.setScene(mainMenuScene);
@@ -47,7 +48,8 @@ public class HelloApplication extends Application {
             root.setBottom(ButtonView.createButtonBar());
             root.setPadding(new Insets(10));
             root.setCenter(sudoku.getSudokuBoardView());
-            root.getCenter().autosize();
+
+           // root.getCenter().autosize();
             root.setRight(ButtonView.createNumberPad(sudoku));
 
             Scene sudokuGameScene = new Scene(root, 750, 600);

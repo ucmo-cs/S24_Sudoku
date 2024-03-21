@@ -29,7 +29,7 @@ public class SudokuBoardController {
         cellsInBoardView = sudokuBoardView.getCellsInBoard();
         editPossibles = false;
         sudokuBoardView.setOnMouseClicked(this::onMouseClick);
-        sudokuBoardView.setMaxSize(100,100);
+        sudokuBoardView.setMaxSize(405,405);
     }
 
     public SudokuBoardView getSudokuBoardView() {
