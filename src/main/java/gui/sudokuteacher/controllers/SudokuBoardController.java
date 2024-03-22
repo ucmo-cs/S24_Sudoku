@@ -93,6 +93,13 @@ public class SudokuBoardController {
                 }
             }
             case H -> {
+                for (CellController[] cellUnit: cellsInBoardView) {
+                    for (CellController cell: cellUnit) {
+                        for (Integer possible: cell.cellModel.getPossibilities()) {
+                            cell.unhighlightPossible(possible);
+                        }
+                    }
+                }
                 ArrayList<StrategyModel> nextStrategies = sudokuModel.getNextStrategy();
                 if(nextStrategies == null){
                     return;
@@ -144,18 +151,23 @@ public class SudokuBoardController {
 
 
     private void moveCell(int dx, int dy) {
-        int currentRow = currentCell.cellRow;
-        int currentColumn = currentCell.cellColumn;
-
-        int newRow = Math.min(Math.max(0, currentRow + dy), 8);
-        int newCol = Math.min(Math.max(0, currentColumn + dx), 8);
-
-        CellController nextCell = cellsInBoardView[newRow][newCol];
-
-        if (nextCell != null) {
-            currentCell.setSelected(false);
-            currentCell = nextCell;
+        if(currentCell == null){
+            currentCell = cellsInBoardView[0][0];
             currentCell.setSelected(true);
+        }else {
+            int currentRow = currentCell.cellRow;
+            int currentColumn = currentCell.cellColumn;
+
+            int newRow = Math.min(Math.max(0, currentRow + dy), 8);
+            int newCol = Math.min(Math.max(0, currentColumn + dx), 8);
+
+            CellController nextCell = cellsInBoardView[newRow][newCol];
+
+            if (nextCell != null) {
+                currentCell.setSelected(false);
+                currentCell = nextCell;
+                currentCell.setSelected(true);
+            }
         }
     }
 

@@ -16,7 +16,7 @@ public class SudokuSolverTester {
         ArrayList<String> sudokusUnsolved = new ArrayList<>();
 
         if (solveSingle) {
-            String sudokuString = ".................1..2..3.4......536..1.......7.......8....8.......91...74.3...2..";
+            String sudokuString = "901500046425090081860010020502000000019000460600000002196040253200060817000001694";
             Sudoku sudokuLinear = new Sudoku(sudokuString);
 
             if (sudokuLinear.solve()) {sudokuLinear.display();

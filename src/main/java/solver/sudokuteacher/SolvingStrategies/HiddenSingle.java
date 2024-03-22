@@ -34,17 +34,7 @@ public class HiddenSingle extends SolvingStrategy{
         }
         return flag;
     }
-
-    @Override
-    public boolean findValidExecutions() {
-        strategyModels.clear();
-        executeStrategy = false;
-        boolean strategyFound = executeStrategy();
-        executeStrategy = true;
-        return strategyFound;
-    }
-
-
+    
     private boolean hiddenSingleRowHelper(int row){
         boolean flag = false;
         Cell cell = new Cell();
