@@ -25,9 +25,18 @@ public abstract class SolvingStrategy {
     }
 
     public abstract boolean executeStrategy();
-    public abstract boolean findValidExecutions();
+   //public abstract boolean findValidExecutions();
 
     public ArrayList<StrategyModel> getStrategyModels(){
         return strategyModels;
     };
+
+
+    public boolean findValidExecutions() {
+        strategyModels.clear();
+        executeStrategy = false;
+        boolean strategyFound = executeStrategy();
+        executeStrategy = true;
+        return strategyFound;
+    }
 }

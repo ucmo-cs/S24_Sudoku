@@ -1,5 +1,6 @@
 package solver.sudokuteacher.SolvingStrategies;
 
+import solver.sudokuteacher.SolvingStrategiesModels.HiddenCandidateModel;
 import solver.sudokuteacher.SudokuCompenents.Cell;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
@@ -34,11 +35,6 @@ public class HiddenCandidate extends SolvingStrategy{
             }
         }
         return flag;
-    }
-
-    @Override
-    public boolean findValidExecutions() {
-        return false;
     }
 
     private boolean hiddenCandidateRow(int row, int candidateNumber){
@@ -174,15 +170,61 @@ public class HiddenCandidate extends SolvingStrategy{
             }
         }
 
+        for (Cell cell: hiddenCandidateCells) {
+            boolean containsPossible = false;
+            for (Integer possible: hiddenCandidatePossibles) {
+                if(cell.getPossibilities().contains(possible)){
+                    containsPossible = true;
+                    break;
+                }
+            }
+            if(!containsPossible){
+                cellToRemove.add(cell);
+            }
+        }
+
         for (Cell cell : cellToRemove) {
             hiddenCandidateCells.remove(cell);
         }
 
 
         if(hiddenCandidateCells.size() == candidateNumber && hiddenCandidatePossibles.size() == candidateNumber){
-            for (Cell cell: hiddenCandidateCells){
-                if (cell.getPossibilities().removeIf(p -> !hiddenCandidatePossibles.contains(p))) {
-                    flag = true;
+            if(executeStrategy) {
+                for (Cell cell : hiddenCandidateCells) {
+                    if (cell.getPossibilities().removeIf(p -> !hiddenCandidatePossibles.contains(p))) {
+                        flag = true;
+                    }
+                }
+            }else{
+                for (Cell cell: hiddenCandidateCells) {
+                    for (Integer possible: cell.getPossibilities()) {
+                        if(!hiddenCandidatePossibles.contains(possible)){
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(flag){
+                        break;
+                    }
+                }
+
+                if(!flag){
+                    return false;
+                }
+
+                HiddenCandidateModel hiddenCandidateModel = null;
+                if(candidateNumber == 2){
+                     hiddenCandidateModel = new HiddenCandidateModel("Hidden Double");
+                }else if(candidateNumber == 3){
+                     hiddenCandidateModel = new HiddenCandidateModel("Hidden Triple");
+                }else if(candidateNumber == 4){
+                     hiddenCandidateModel = new HiddenCandidateModel("Hidden Quad");
+                }
+
+                if(hiddenCandidateModel != null){
+                    hiddenCandidateModel.setHiddenCandidateCells(hiddenCandidateCells);
+                    hiddenCandidateModel.setHiddenCandidatePossibles(hiddenCandidatePossibles);
+                    strategyModels.add(hiddenCandidateModel);
                 }
             }
         }

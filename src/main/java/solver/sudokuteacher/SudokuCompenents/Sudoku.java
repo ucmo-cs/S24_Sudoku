@@ -162,15 +162,14 @@ public class Sudoku {
 
     private void initializeStrategies(){
         this.strategies = new ArrayList<>(21);
-        NakedSingle ns = new NakedSingle(this);
-        HiddenSingle hs = new HiddenSingle(this);
-        NakedPair np = new NakedPair(this);
-        //NakedCandidate nc2 = new NakedCandidate(this, 3);
-        NakedTriple nc2 = new NakedTriple(this);
-        NakedCandidate nc3 = new NakedCandidate(this, 4);
-        HiddenCandidate hc1 = new HiddenCandidate(this,2);
-        HiddenCandidate hc2 = new HiddenCandidate(this,3);
-        HiddenCandidate hc3 = new HiddenCandidate(this,4);
+        NakedSingle nakedSingle = new NakedSingle(this);
+        HiddenSingle hiddenSingle = new HiddenSingle(this);
+        NakedPair nakedPair = new NakedPair(this);
+        NakedTriple nakedTriple = new NakedTriple(this);
+        NakedQuad nakedQuad = new NakedQuad(this);
+        HiddenCandidate hiddenPair = new HiddenCandidate(this,2);
+        HiddenCandidate hiddenTriple = new HiddenCandidate(this,3);
+        HiddenCandidate hiddenQuad = new HiddenCandidate(this,4);
         PointingPairsAndTriples pp = new PointingPairsAndTriples(this);
         BoxLineReduction blr = new BoxLineReduction(this);
         XWing xWing = new XWing(this);
@@ -185,15 +184,15 @@ public class Sudoku {
         AlternatingInferenceChain aic = new AlternatingInferenceChain(this);
         RecursiveGuess guess = new RecursiveGuess(this);
 
-        strategies.add(ns);
-        strategies.add(hs);
-        strategies.add(np);
-        strategies.add(nc2);
-/*        strategies.add(nc3);
-        strategies.add(hc1);
-        strategies.add(hc2);
-        strategies.add(hc3);
-        strategies.add(pp);
+        strategies.add(nakedSingle);
+        strategies.add(hiddenSingle);
+        strategies.add(nakedPair);
+        strategies.add(hiddenPair);
+        strategies.add(nakedTriple);
+        strategies.add(hiddenTriple);
+        strategies.add(nakedQuad);
+        strategies.add(hiddenQuad);
+/*        strategies.add(pp);
         strategies.add(blr);
         strategies.add(xWing);
         strategies.add(sc);

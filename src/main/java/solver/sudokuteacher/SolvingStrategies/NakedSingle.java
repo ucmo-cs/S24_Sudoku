@@ -31,12 +31,5 @@ public class NakedSingle extends SolvingStrategy{
         return flag;
     }
 
-    public boolean findValidExecutions(){
-        strategyModels.clear();
-        executeStrategy = false;
-        boolean strategyFound = executeStrategy();
-        executeStrategy = true;
-        return strategyFound;
-    }
 
 }
