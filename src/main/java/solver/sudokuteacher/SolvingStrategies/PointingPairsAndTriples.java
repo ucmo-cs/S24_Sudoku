@@ -1,5 +1,7 @@
 package solver.sudokuteacher.SolvingStrategies;
 
+import solver.sudokuteacher.SolvingStrategiesModels.PointingPairAndTripleModel;
+import solver.sudokuteacher.SudokuCompenents.Cell;
 import solver.sudokuteacher.SudokuCompenents.Sudoku;
 
 import java.util.ArrayList;
@@ -27,11 +29,6 @@ public class PointingPairsAndTriples extends SolvingStrategy{
         }
 
         return flag;
-    }
-
-    @Override
-    public boolean findValidExecutions() {
-        return false;
     }
 
 
@@ -81,6 +78,95 @@ public class PointingPairsAndTriples extends SolvingStrategy{
         }
         if(pointingPairRowHelper(row3, column, row3Possibilities, row1Possibilities, row2Possibilities)){
             flag = true;
+        }
+
+        return flag;
+    }
+
+    private boolean pointingPairRowHelper(int row, int column, ArrayList<Integer> currentUnit, ArrayList<Integer> otherUnit1, ArrayList<Integer> otherUnit2){
+        boolean flag = false;
+
+        for (Integer possibility : currentUnit) {
+            //if unit contains unique solution, remove from other cells in other box rows
+            if (!(otherUnit1.contains(possibility) || otherUnit2.contains(possibility))) {
+                ArrayList<Cell> affectedCells = new ArrayList<>();
+                ArrayList<Cell> pointingPossibleCells = new ArrayList<>();
+                if (column < 3) {
+                    for (int i = 3; i < 9; i++) {
+                        if(executeStrategy) {
+                            if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[row][i].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[row][i]);
+                            }
+                        }
+                    }
+                } else if (column < 6) {
+                        for (int i = 0; i < 3; i++) {
+                            if(executeStrategy) {
+                                if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
+                                    flag = true;
+                                }
+                            }else{
+                                if(sudokuBoard[row][i].getPossibilities().contains(possibility)){
+                                    affectedCells.add(sudokuBoard[row][i]);
+                                }
+                            }
+                        }
+
+                        for (int i = 6; i < 9; i++) {
+                            if(executeStrategy) {
+                                if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
+                                    flag = true;
+                                }
+                            }else{
+                                if(sudokuBoard[row][i].getPossibilities().contains(possibility)){
+                                    affectedCells.add(sudokuBoard[row][i]);
+                                }
+                            }
+                        }
+
+                } else {
+                    for (int i = 0; i < 6; i++) {
+                        if(executeStrategy) {
+                            if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[row][i].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[row][i]);
+                            }
+                        }
+                    }
+                }
+
+                if(affectedCells.size() > 0){
+                    for (int i = column; i < column + 3; i++) {
+                        if(sudokuBoard[row][i].getPossibilities().contains(possibility)){
+                            pointingPossibleCells.add(sudokuBoard[row][i]);
+                        }
+                    }
+
+                    if(pointingPossibleCells.size() > 0) {
+                        PointingPairAndTripleModel strategy = null;
+                        if (pointingPossibleCells.size() == 2) {
+                             strategy = new PointingPairAndTripleModel("Pointing Pair");
+                        } else if (pointingPossibleCells.size() == 3) {
+                             strategy = new PointingPairAndTripleModel("Pointing Triple");
+                        }
+
+                        if(strategy != null){
+                            strategy.setStrategyCells(pointingPossibleCells);
+                            strategy.setAffectedCells(affectedCells);
+                            strategy.setStrategyPossible(possibility);
+                            strategyModels.add(strategy);
+                            flag = true;
+                        }
+                    }
+                }
+            }
         }
 
         return flag;
@@ -137,69 +223,85 @@ public class PointingPairsAndTriples extends SolvingStrategy{
         return flag;
     }
 
-    private boolean pointingPairRowHelper(int row, int column, ArrayList<Integer> currentUnit, ArrayList<Integer> otherUnit1, ArrayList<Integer> otherUnit2){
-        boolean flag = false;
 
-        for (Integer possibility : currentUnit) {
-            //if unit contains unique solution, remove from other cells in other box rows
-            if (!(otherUnit1.contains(possibility) || otherUnit2.contains(possibility))) {
-                if (column < 3) {
-                    for (int i = 3; i < 9; i++) {
-                        if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
-                            flag = true;
-                        }
-                    }
-                } else if (column < 6) {
-                    for (int i = 0; i < 3; i++) {
-                        if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
-                            flag = true;
-                        }
-                    }
-
-                    for (int i = 6; i < 9; i++) {
-                        if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
-                            flag = true;
-                        }
-                    }
-                } else {
-                    for (int i = 0; i < 6; i++) {
-                        if (sudokuBoard[row][i].getPossibilities().remove(possibility)) {
-                            flag = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return flag;
-    }
     private boolean pointingPairColumnHelper(int row, int column, ArrayList<Integer> currentUnit, ArrayList<Integer> otherUnit1, ArrayList<Integer> otherUnit2){
         boolean flag = false;
 
         for (Integer possibility : currentUnit) {
+            ArrayList<Cell> affectedCells = new ArrayList<>();
+            ArrayList<Cell> pointingPossibleCells = new ArrayList<>();
             //if unit contains unique solution, remove from other cells in other box rows
             if (!(otherUnit1.contains(possibility) || otherUnit2.contains(possibility))) {
                 if (row < 3) {
                     for (int i = 3; i < 9; i++) {
-                        if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
-                            flag = true;
+                        if(executeStrategy){
+                            if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[i][column].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[i][column]);
+                            }
                         }
                     }
                 } else if (row < 6) {
                     for (int i = 0; i < 3; i++) {
-                        if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
-                            flag = true;
+                        if(executeStrategy) {
+                            if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[i][column].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[i][column]);
+                            }
                         }
                     }
 
                     for (int i = 6; i < 9; i++) {
-                        if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
-                            flag = true;
+                        if(executeStrategy) {
+                            if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[i][column].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[i][column]);
+                            }
                         }
                     }
                 } else {
                     for (int i = 0; i < 6; i++) {
-                        if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
+                        if(executeStrategy) {
+                            if (sudokuBoard[i][column].getPossibilities().remove(possibility)) {
+                                flag = true;
+                            }
+                        }else{
+                            if(sudokuBoard[i][column].getPossibilities().contains(possibility)){
+                                affectedCells.add(sudokuBoard[i][column]);
+                            }
+                        }
+                    }
+                }
+
+                if(affectedCells.size() > 0){
+                    for (int i = row; i < row + 3; i++) {
+                        if(sudokuBoard[i][column].getPossibilities().contains(possibility)){
+                            pointingPossibleCells.add(sudokuBoard[i][column]);
+                        }
+                    }
+
+                    if(pointingPossibleCells.size() > 0) {
+                        PointingPairAndTripleModel strategy = null;
+                        if (pointingPossibleCells.size() == 2) {
+                            strategy = new PointingPairAndTripleModel("Pointing Pair");
+                        } else if (pointingPossibleCells.size() == 3) {
+                            strategy = new PointingPairAndTripleModel("Pointing Triple");
+                        }
+
+                        if(strategy != null){
+                            strategy.setStrategyCells(pointingPossibleCells);
+                            strategy.setAffectedCells(affectedCells);
+                            strategy.setStrategyPossible(possibility);
+                            strategyModels.add(strategy);
                             flag = true;
                         }
                     }

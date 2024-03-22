@@ -10,13 +10,13 @@ public class SudokuSolverTester {
     public static void main(String[] args) throws IOException {
         double totalStartTime = System.nanoTime();
 
-        boolean solveSingle = false;
+        boolean solveSingle = true;
         boolean writeToFile = false;
 
         ArrayList<String> sudokusUnsolved = new ArrayList<>();
 
         if (solveSingle) {
-            String sudokuString = "901500046425090081860010020502000000019000460600000002196040253200060817000001694";
+            String sudokuString = "017903600000080000900000507072010430000402070064370250701000065000030000005601720";
             Sudoku sudokuLinear = new Sudoku(sudokuString);
 
             if (sudokuLinear.solve()) {sudokuLinear.display();
