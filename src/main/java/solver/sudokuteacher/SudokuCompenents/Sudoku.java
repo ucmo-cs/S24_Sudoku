@@ -170,7 +170,7 @@ public class Sudoku {
         HiddenCandidate hiddenPair = new HiddenCandidate(this,2);
         HiddenCandidate hiddenTriple = new HiddenCandidate(this,3);
         HiddenCandidate hiddenQuad = new HiddenCandidate(this,4);
-        PointingPairsAndTriples pp = new PointingPairsAndTriples(this);
+        PointingPairsAndTriples pointingPairsAndTriples = new PointingPairsAndTriples(this);
         BoxLineReduction blr = new BoxLineReduction(this);
         XWing xWing = new XWing(this);
         SimpleColoring sc = new SimpleColoring(this);
@@ -192,8 +192,8 @@ public class Sudoku {
         strategies.add(hiddenTriple);
         strategies.add(nakedQuad);
         strategies.add(hiddenQuad);
-/*        strategies.add(pp);
-        strategies.add(blr);
+        strategies.add(pointingPairsAndTriples);
+/*        strategies.add(blr);
         strategies.add(xWing);
         strategies.add(sc);
         strategies.add(yWing);

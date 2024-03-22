@@ -4,6 +4,8 @@ import gui.sudokuteacher.controllers.CellController;
 import java.util.ArrayList;
 
 public class Cell  {
+
+
     CellController cellController;
     private int solution;
     private final ArrayList<Integer> possibilities = new ArrayList<>();
@@ -41,6 +43,9 @@ public class Cell  {
     }
     public int getRow() {
         return row;
+    }
+    public CellController getCellController() {
+        return cellController;
     }
 
     @Override

@@ -81,12 +81,20 @@ public class CellView extends StackPane  {
     }
 
     public void highlightPossible(int possible, Color color){
-        CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
-        currentPossible.highlightPossible(color);
+        try {
+            CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+            currentPossible.highlightPossible(color);
+        }catch (NullPointerException e){
+
+        }
     }
     public void unhighlightPossible(int possible){
-        CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
-        currentPossible.undoHighlight();
+        try {
+            CellPossibilityView currentPossible = (CellPossibilityView) cellPossibilityGridPane.getChildren().get(possible - 1);
+            currentPossible.undoHighlight();
+        }catch (NullPointerException e){
+
+        }
     }
 
     public void hidePencilMark(int possible){
