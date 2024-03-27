@@ -24,28 +24,10 @@ public class PlaySudokuScene extends Application {
         primaryStage.show();
     }
 
+    //SudokuBoardController sudoku = new SudokuBoardController("087400030040008200100700000900050408001090060008007000000000009000064000030002010");
+
     public static void startSudokuGame(Stage primaryStage) {
-        try {
-            // Create the Sudoku game scene
-            SudokuBoardController sudoku = new SudokuBoardController("087400030040008200100700000900050408001090060008007000000000009000064000030002010");
-            BorderPane root = new BorderPane();
-            root.setBottom(ButtonView.createButtonBar());
-            root.setPadding(new Insets(10));
-            root.setCenter(sudoku.getSudokuBoardView());
-
-           // root.getCenter().autosize();
-            root.setRight(ButtonView.createNumberPad(sudoku));
-
-            Scene sudokuGameScene = new Scene(root, 750, 600);
-            sudokuGameScene.setOnKeyPressed(e -> sudoku.keyPressed(e.getCode()));
-
-            // Switch to the Sudoku game scene
-            primaryStage.setScene(sudokuGameScene);
-            primaryStage.setTitle("Sudoku Game");
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SudokuGameScene.startSudokuGame(primaryStage,"087400030040008200100700000900050408001090060008007000000000009000064000030002010" );
     }
 
     public void onKeyPressed(KeyEvent e){
