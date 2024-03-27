@@ -27,7 +27,7 @@ public class PlaySudokuScene extends Application {
     public static void startSudokuGame(Stage primaryStage) {
         try {
             // Create the Sudoku game scene
-            SudokuBoardController sudoku = new SudokuBoardController("017903600000080000900000507072010430000402070064370250701000065000030000005601720");
+            SudokuBoardController sudoku = new SudokuBoardController("087400030040008200100700000900050408001090060008007000000000009000064000030002010");
             BorderPane root = new BorderPane();
             root.setBottom(ButtonView.createButtonBar());
             root.setPadding(new Insets(10));
