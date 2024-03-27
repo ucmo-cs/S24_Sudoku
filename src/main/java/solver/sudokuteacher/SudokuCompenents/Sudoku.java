@@ -193,8 +193,8 @@ public class Sudoku {
         strategies.add(nakedQuad);
         strategies.add(hiddenQuad);
         strategies.add(pointingPairsAndTriples);
-/*        strategies.add(blr);
-        strategies.add(xWing);
+        strategies.add(blr);
+/*        strategies.add(xWing);
         strategies.add(sc);
         strategies.add(yWing);
         strategies.add(er);
